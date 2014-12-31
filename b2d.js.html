@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: b2d.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: b2d.js</h1>
+
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Module to wrap and abstract access to boot2docker.
+ * @module b2d
+ */
+
+'use strict';
+
+var EventEmitter = require('events').EventEmitter;
+var events = new EventEmitter();
+module.exports.events = events;
+
+var fs = require('fs');
+var path = require('path');
+var core = require('./core.js');
+
+var B2D_EXECUTABLE = 'boot2docker';
+
+function getShell() {
+  return core.deps.lookup('shell');
+}
+
+var isInstalled = function(callback) {
+  var cmd = 'which boot2docker';
+  getShell().exec(cmd, function(err, output) {
+    if (!err &amp;&amp; output) {
+      callback(null, true);
+    } else if (err &amp;&amp; !output) {
+      callback(null, false);
+    } else {
+      callback(err, false);
+    }
+  });
+};
+module.exports.isInstalled = isInstalled;
+
+function verifyB2dInstalled(callback) {
+  isInstalled(function(err, isInstalled) {
+    if (err) {
+      throw err;
+    } else if (!isInstalled) {
+      throw new Error('Boot2docker is NOT installed!');
+    } else {
+      callback();
+    }
+  });
+}
+
+var hasProfile = function(callback) {
+  var B2D_PROFILE = path.join(core.deps.lookup('config').sysConfRoot, 'b2d.profile');
+  if (fs.existsSync(B2D_PROFILE)) {
+    core.env.setB2dProf(B2D_PROFILE);
+    callback(true);
+  } else {
+    callback(false);
+  }
+};
+module.exports.hasProfile = hasProfile;
+
+function verifyB2dProfile(callback) {
+  hasProfile(function(hasProfile) {
+    if (hasProfile) {
+      callback();
+    } else {
+      throw new Error('You need a Boot2Docker profile. Try kbox install!');
+    }
+  });
+}
+
+function _execB2dCommand(cmd, callback) {
+  getShell().exec(B2D_EXECUTABLE + ' ' + cmd, function(err, output) {
+    if (err) {
+      if (callback) {
+        callback(err, output);
+      }
+      else {
+        throw err;
+      }
+    } else {
+      callback(err, output);
+    }
+  });
+}
+
+function execB2dCommand(cmd, callback) {
+  verifyB2dInstalled(function() {
+    verifyB2dProfile(function() {
+      _execB2dCommand(cmd, callback);
+    });
+  });
+}
+
+var _down = function(attempts, callback) {
+  execB2dCommand('down', function(err, output) {
+    if (err &amp;&amp; attempts === 0) {
+      throw err;
+    }
+    else if (err &amp;&amp; attempts > 0) {
+      _down(--attempts, callback);
+    }
+    else {
+      events.emit('post-down');
+      callback();
+    }
+  });
+};
+
+/**
+ * Stops VM.
+ * @arg {function} callback - Callback function called on completion
+ * @example
+ * var b2d = require(...);
+ * b2d.down(function() {
+ *   console.log('VM stopped!');
+ * });
+ */
+module.exports.down = function(attempts, callback) {
+  events.emit('pre-down');
+  _down(attempts, callback);
+};
+
+var _up = function(attempts, callback) {
+  execB2dCommand('up', function(err, output) {
+    if (err &amp;&amp; attempts === 0) {
+      throw err;
+    }
+    else if (err &amp;&amp; attempts > 0) {
+      _up(--attempts, callback);
+    }
+    else {
+      events.emit('post-up');
+      callback();
+    }
+  });
+};
+
+/**
+ * Starts VM.
+ * @arg {function} callback - Callback function called on completion
+ * @example
+ * var b2d = require(...);
+ * b2d.up(function() {
+ *   console.log('VM is now running!');
+ * });
+ */
+module.exports.up = function(attempts, callback) {
+  events.emit('pre-up');
+  _up(attempts, callback);
+};
+
+function removeTrailing(src, s) {
+  var end = src.substr(src.length - s.length, s.length);
+  if (end === s) {
+    return src.substr(0, src.length - s.length);
+  } else {
+    return src;
+  }
+}
+
+function removeTrailingNewline(src) {
+  return removeTrailing(src, '\n');
+}
+
+/**
+ * Queries boot2docker for VM host's status.
+ * @arg {function} callback - Callback function called on completion
+ * @returns {string} status - Status of VM host
+ * @example
+ * var b2d = require(...);
+ * b2d.status(function(status) {
+ *   if (status !== 'running') {
+ *     console.log('status: ' + status);
+ *   }
+ * });
+ */
+var state = function(attempts, callback) {
+  execB2dCommand('status', function(err, output) {
+    if (err &amp;&amp; attempts === 0) {
+      throw err;
+    }
+    else if (err &amp;&amp; attempts > 0) {
+      --attempts;
+      state(attempts, callback);
+    }
+    else {
+      var message = removeTrailingNewline(output);
+      // @todo: debug remove
+      callback(message);
+    }
+  });
+};
+module.exports.state = state;
+
+/**
+ * Queries boot2docker for VM host's IP address.
+ * @arg {function} callback - Callback function called on completion
+ * @returns {string} ip - IP address
+ * @example
+ * var b2d = require(...);
+ * b2d.ip(function(err, ip) {
+ *   console.log('IP address: ' + ip);
+ * });
+ */
+var ip = function(attempts, callback) {
+  execB2dCommand('ip', function(err, output) {
+    if (err &amp;&amp; attempts === 0) {
+      throw err;
+    }
+    else if (err &amp;&amp; attempts > 0) {
+      --attempts;
+      ip(attempts, callback);
+    }
+    else {
+      var matches = output.match('IP address is: [\n]*(.*)');
+      if (matches &amp;&amp; matches[1]) {
+        callback(null, matches[1]);
+      } else {
+        callback(err, output);
+      }
+    }
+  });
+};
+module.exports.ip = ip;
+
+/**
+ * Initializes the Boot2docker VM with the users profile config
+ * @arg {function} callback - Callback function called on completion
+ * @example
+ * var b2d = require(...);
+ * b2d.init(function(err, init) {
+ * });
+ */
+var init = function(attempts, callback) {
+  execB2dCommand('init', function(err, output) {
+    if (err &amp;&amp; attempts === 0) {
+      throw err;
+    }
+    else if (err &amp;&amp; attempts > 0) {
+      --attempts;
+      init(attempts, callback);
+    }
+    else {
+      callback(output);
+    }
+  });
+};
+module.exports.init = init;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-b2d.html">b2d</a></li><li><a href="module-deps.html">deps</a></li><li><a href="module-plugin.html">plugin</a></li><li><a href="module-shell.html">shell</a></li><li><a href="module-task.html">task</a></li></ul><h3>Classes</h3><ul><li><a href="module-task-Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_startupServiceStart">_startupServiceStart</a></li><li><a href="global.html#App">App</a></li><li><a href="global.html#build">build</a></li><li><a href="global.html#create">create</a></li><li><a href="global.html#createOpts">createOpts</a></li><li><a href="global.html#getApps">getApps</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#kill">kill</a></li><li><a href="global.html#list">list</a></li><li><a href="global.html#manager">manager</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#pull">pull</a></li><li><a href="global.html#pullMany">pullMany</a></li><li><a href="global.html#purgeContainers">purgeContainers</a></li><li><a href="global.html#registerTask">registerTask</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startOpts">startOpts</a></li><li><a href="global.html#stop">stop</a></li><li><a href="global.html#verifyAppNameIsValid">verifyAppNameIsValid</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Dec 31 2014 21:18:41 GMT+0000 (UTC)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

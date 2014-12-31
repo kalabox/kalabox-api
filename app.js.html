@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: app.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: app.js</h1>
+
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+
+var EventEmitter = require('events').EventEmitter;
+var fs = require('fs');
+var path = require('path');
+var util = require('util');
+var _util = require('./util.js');
+
+var _ = require('lodash');
+
+var kbox = require('./kbox.js');
+var core = kbox.core;
+
+var cmp = require('./component.js');
+
+/**
+ * Loads an individual plugin into the app manager.
+ */
+/*var loadPlugin = function(plugin, key, app, context) {
+  plugin.key = key;
+  var pluginPath = 'plugins/' + key;
+  if (plugin.path) {
+    pluginPath = plugin.path + '/' + key;
+  }
+  var src = loadPath(app, pluginPath);
+  if (src !== false) {
+    app.manager.plugins[key] = _plugin.init(plugin, require(src));
+  }
+};*/
+
+/**
+ * Validates appName against regular expression.
+ */
+var verifyAppNameIsValid = function(appName) {
+  if (!_util.longname.isValid(appName)) {
+    var regex = _util.longname.getValidateRegex();
+    var msg = util.format('App name "%s" must match regular expression "%s".',
+      appName,
+      regex
+    );
+    throw new Error(msg);
+  }
+};
+
+/**
+ * Loads static config + dynamic elements into the app object.
+ */
+/*var loadConfig = function(app) {
+  app.tasks = {};
+
+  // TODO: Validate config location
+  app.profilePath = path.resolve(app.path, '.kalabox');
+  if (!fs.existsSync(app.profilePath)) {
+    throw new Error('File does not exist: ' + app.profilePath);
+  }
+  var configFile = path.resolve(app.profilePath, 'profile.json');
+  if (!fs.existsSync(configFile)) {
+    throw new Error('File does not exist: ' + configFile);
+  }
+  // Load config
+  app.config = require(configFile);
+
+  // Validate name
+  if (!app.config.name) {
+    throw new Error('App config must define a name.');
+  }
+  verifyAppNameIsValid(app.config.name);
+  // Set name based properties
+  app.name = app.config.name;
+  app.appdomain = app.name + '.' + app.kconfig.domain;
+  app.dataPath = path.resolve(app.kconfig.appDataPath, app.name);
+  app.cidPath = path.resolve(app.dataPath, 'cids');
+  app.url = 'http://' + app.appdomain;
+  app.prefix = app.name + '_';
+
+  // Validate components exist
+  if (!app.config.components) {
+    throw new Error('App config must contain at least 1 component.');
+  }
+  // Set data component for special handling
+  app.hasData = app.config.components.hasOwnProperty('data');
+  app.dataCname = app.hasData ? 'kb_' + app.prefix + 'data' : null;
+};*/
+
+var App = function(name, config)   {
+  var self = this;
+  var _this = self;
+
+  self.config = config;
+  self.name = name;
+  self.appDomain = [self.name, config.domain].join('.');
+  self.url = 'http://' + self.appDomain;
+  self.dataContainerName = null;
+
+  // Setup event emitter &amp; public handler
+  EventEmitter.call(this);
+  this.event = function(key, obj) {
+    _this.emit(key, obj);
+  };
+};
+util.inherits(App, EventEmitter);
+
+App.prototype.setupComponents = function() {
+  var self = this;
+  self.components = {};
+  // Ensure the cids dir has been created.
+  if (!fs.existsSync(self.config.appCidsRoot)) {
+    fs.mkdirSync(self.config.appCidsRoot);
+  }
+  for (var key in this.config.appComponents) {
+    var component = this.config.appComponents[key];
+    self.components[key] = new cmp.Component(self, key, component);
+    if (key === 'data') {
+      self.dataContainerName = ['kb', self.name, 'data'].join('_');
+    }
+  }
+};
+
+App.prototype.loadPlugins = function() {
+  var self = this;
+  if (self.config.appPlugins !== undefined) {
+    self.plugins = self.config.appPlugins;
+  } else {
+    self.plugins = [];
+  }
+  var pluginDirs = [
+    self.config.appRoot,
+    self.config.srcRoot,
+    self.config.kalaboxRoot
+  ];
+  var overrides = {
+    app: self,
+    appConfig: self.config
+  };
+  core.deps.override(overrides, function(done) {
+    self.plugins.forEach(function(pluginName) {
+      var plugin = core.plugin.load(pluginName, pluginDirs);
+      if (plugin !== null) {
+        self.plugins[pluginName] = plugin;
+      }
+    });
+    self.config.globalPlugins.forEach(function(pluginName) {
+      var plugin = core.plugin.loadIfUsesApp(pluginName, pluginDirs);
+      if (plugin !== null) {
+        self.plugins[pluginName] = plugin;
+      }
+    });
+    done();
+  });
+};
+
+App.prototype.setup = function() {
+  this.setupComponents();
+  this.loadPlugins();
+};
+
+module.exports = App;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-b2d.html">b2d</a></li><li><a href="module-deps.html">deps</a></li><li><a href="module-plugin.html">plugin</a></li><li><a href="module-shell.html">shell</a></li><li><a href="module-task.html">task</a></li></ul><h3>Classes</h3><ul><li><a href="module-task-Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_startupServiceStart">_startupServiceStart</a></li><li><a href="global.html#App">App</a></li><li><a href="global.html#build">build</a></li><li><a href="global.html#create">create</a></li><li><a href="global.html#createOpts">createOpts</a></li><li><a href="global.html#getApps">getApps</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#kill">kill</a></li><li><a href="global.html#list">list</a></li><li><a href="global.html#manager">manager</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#pull">pull</a></li><li><a href="global.html#pullMany">pullMany</a></li><li><a href="global.html#purgeContainers">purgeContainers</a></li><li><a href="global.html#registerTask">registerTask</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startOpts">startOpts</a></li><li><a href="global.html#stop">stop</a></li><li><a href="global.html#verifyAppNameIsValid">verifyAppNameIsValid</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Dec 31 2014 21:18:41 GMT+0000 (UTC)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

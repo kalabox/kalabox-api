@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: core/deps.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: core/deps.js</h1>
+
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @namespace: kbox.core.deps
+ * Module for angularjs style dependency injection.
+ * @module deps
+ */
+
+'use strict';
+
+var FLAG_STRING = 'flag';
+
+var _deps = {};
+
+function _getDep(name) {
+  return _deps[name];
+}
+
+function _setDep(name, value) {
+  _deps[name] = value;
+}
+
+function _clear() {
+  _deps = {};
+}
+
+function _remove(name) {
+  delete _deps[name];
+}
+
+/**
+ * Clears all registered dependencies.
+ * @example
+ * var deps = require(...);
+ * deps.register('foo', 'bar');
+ * assert(deps.contains('foo'));
+ * deps.clear();
+ * assert(!deps.contains('foo'));
+ */
+module.exports.clear = function() {
+  _clear();
+};
+
+/**
+ * Removes a given dependency.
+ * @arg {string} name - Name of dependency to remove.
+ * @example
+ * var deps = require(...);
+ * deps.register('key', 'value');
+ * deps.remove('key');
+ */
+module.exports.remove = function(name) {
+  _remove(name);
+};
+
+/**
+ * Searches to find if a dependency exists.
+ * @arg {string} name - Name of dependency.
+ * @returns - True if dependency exists otherwise false.
+ * @example
+ * var deps = require(...);
+ * if (!deps.contains('docker')) {
+ *   deps.register('docker', new Docker(config));
+ * }
+ */
+module.exports.contains = function(name) {
+  var result = _getDep(name);
+  return result !== undefined;
+};
+
+/**
+ * Registers dependency for later access by other modules.
+ * @arg {string} name - Name of dependency.
+ * @arg dependency - Dependency to register.
+ * @example
+ * var deps = require(...);
+ * deps.register('app', new App(config));
+ */
+module.exports.register = function(name, dep) {
+  if (_getDep(name) !== undefined) {
+    var msg = 'Tried to register a dependency "' + name + '" that was already registered.';
+    throw new Error(msg);
+  }
+  _setDep(name, dep);
+};
+
+/**
+ * Looks up name of dependency and returns dependency.
+ * @arg {string} name - Name of dependency.
+ * @arg {object} [options] - Optional function behaivor.
+ * @returns - Value of dependency or undefined if dependency does not exist.
+ * @example
+ * var deps = require(...);
+ * var result = deps.lookup('mydepname', {optional:true});
+ * if (result) {
+ *   console.log(result);
+ * }
+ * @example
+ * var deps = require(...);
+ * try {
+ *   var result = deps.lookup('mydepname');
+ * } catch (err) {
+ *   console.log('Dependency does not exist!');
+ * }
+ */
+module.exports.lookup = function(name, opts) {
+  var result = _getDep(name);
+  if (result !== undefined) {
+    return result;
+  } else if (opts &amp;&amp; opts.optional &amp;&amp; opts.optional === true) {
+    return null;
+  } else {
+    throw new Error('The dependency "' + name + '" was NOT found!');
+  }
+};
+
+function _isFlag(name) {
+  return (name.substr(0, FLAG_STRING.length) === FLAG_STRING);
+}
+
+module.exports.getFlags = function() {
+  var flags = {};
+  for (var dep in _deps) {
+    if (_isFlag(dep)) {
+      var firstLetter = dep.substr(FLAG_STRING.length, 1);
+      var theRest = dep.substring(FLAG_STRING.length + 1);
+      var key = firstLetter.toLowerCase() + theRest;
+      flags[key] = _deps[dep];
+    }
+  }
+  return flags;
+};
+
+/**
+ * Overrides given dependencies with given values for the duration of callback.
+ * @arg {object} overrides - Object containing key value pairs of overrides.
+ * @arg {function} callback - Callback function to be called to restore overrides.
+ * @example
+ * var deps = require('...');
+ * assert(deps.lookup('mode') === 'prod');
+ * deps.override({mode:test}, function(done) {
+ *   assert(deps.lookup('mode') === 'test');
+ * });
+ */
+module.exports.override = function(overrides, callback) {
+  var savedValues = {};
+  // Save current deps to be restored later.
+  for (var key in overrides) {
+    savedValues[key] = _deps[key];
+    _deps[key] = overrides[key];
+  }
+  // When callback is done with overrides, restore deps.
+  callback(function() {
+    // Restore deps.
+    for (var key in overrides) {
+      _deps[key] = savedValues[key];
+    }
+  });
+};
+
+var inspect = function(cb) {
+  var FN_ARGS = /^function\s*[^\(]*\(\s*([^\)]*)\)/m;
+  var text = cb.toString();
+  var rawArgs = text.match(FN_ARGS)[1];
+  if (rawArgs === '') {
+    return [];
+  } else {
+    var trim = function(v) { return v.trim(); };
+    var args = rawArgs.split(',').map(trim);
+    return args;
+  }
+};
+module.exports.inspect = inspect;
+
+/**
+ * Calls callback function with auto populated dependencies.
+ * @arg {function} cb - callback function.
+ * @example
+ * var deps = require(...);
+ * deps.call(function(app, flagVerbose) {
+ *   if (flagVerbose) {
+ *     console.log(app.name);
+ *   }
+ * });
+ */
+module.exports.call = function(cb) {
+  var deps = this.inspect(cb).map(this.lookup);
+  return cb.apply(cb, deps);
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-b2d.html">b2d</a></li><li><a href="module-deps.html">deps</a></li><li><a href="module-plugin.html">plugin</a></li><li><a href="module-shell.html">shell</a></li><li><a href="module-task.html">task</a></li></ul><h3>Classes</h3><ul><li><a href="module-task-Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_startupServiceStart">_startupServiceStart</a></li><li><a href="global.html#App">App</a></li><li><a href="global.html#build">build</a></li><li><a href="global.html#create">create</a></li><li><a href="global.html#createOpts">createOpts</a></li><li><a href="global.html#getApps">getApps</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#kill">kill</a></li><li><a href="global.html#list">list</a></li><li><a href="global.html#manager">manager</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#pull">pull</a></li><li><a href="global.html#pullMany">pullMany</a></li><li><a href="global.html#purgeContainers">purgeContainers</a></li><li><a href="global.html#registerTask">registerTask</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startOpts">startOpts</a></li><li><a href="global.html#stop">stop</a></li><li><a href="global.html#verifyAppNameIsValid">verifyAppNameIsValid</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Dec 31 2014 21:18:41 GMT+0000 (UTC)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
