@@ -1,31 +1,183 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>JSDoc: Source: core/deps.js</title>
+	<meta charset="utf-8">
+	<title>Kalabox API Source: core/deps.js</title>
 
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cerulean.css">
+
 </head>
 
 <body>
+<div class="container-fluid">
+	<div class="navbar navbar-fixed-top navbar-inverse">
+		<div class="navbar-inner">
+			<a class="brand" href="index.html">Kalabox API</a>
+			<ul class="nav">
+				
+				<li class="dropdown">
+					<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b
+						class="caret"></b></a>
 
-<div id="main">
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="module-b2d.html">b2d</a>
+						</li>
+						
+						<li>
+							<a href="module-deps.html">deps</a>
+						</li>
+						
+						<li>
+							<a href="module-plugin.html">plugin</a>
+						</li>
+						
+						<li>
+							<a href="module-shell.html">shell</a>
+						</li>
+						
+						<li>
+							<a href="module-task.html">task</a>
+						</li>
+						
 
-    <h1 class="page-title">Source: core/deps.js</h1>
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b
+						class="caret"></b></a>
 
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="module-task-Task.html">task~Task</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+				<li class="dropdown">
+					<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b
+						class="caret"></b></a>
+
+					<ul class="dropdown-menu ">
+						
+						<li>
+							<a href="global.html#_startupServiceStart">_startupServiceStart</a>
+						</li>
+						
+						<li>
+							<a href="global.html#App">App</a>
+						</li>
+						
+						<li>
+							<a href="global.html#build">build</a>
+						</li>
+						
+						<li>
+							<a href="global.html#create">create</a>
+						</li>
+						
+						<li>
+							<a href="global.html#createOpts">createOpts</a>
+						</li>
+						
+						<li>
+							<a href="global.html#engineOpt">engineOpt</a>
+						</li>
+						
+						<li>
+							<a href="global.html#getApps">getApps</a>
+						</li>
+						
+						<li>
+							<a href="global.html#init">init</a>
+						</li>
+						
+						<li>
+							<a href="global.html#kill">kill</a>
+						</li>
+						
+						<li>
+							<a href="global.html#list">list</a>
+						</li>
+						
+						<li>
+							<a href="global.html#manager">manager</a>
+						</li>
+						
+						<li>
+							<a href="global.html#name">name</a>
+						</li>
+						
+						<li>
+							<a href="global.html#pull">pull</a>
+						</li>
+						
+						<li>
+							<a href="global.html#pullMany">pullMany</a>
+						</li>
+						
+						<li>
+							<a href="global.html#purgeContainers">purgeContainers</a>
+						</li>
+						
+						<li>
+							<a href="global.html#registerTask">registerTask</a>
+						</li>
+						
+						<li>
+							<a href="global.html#remove">remove</a>
+						</li>
+						
+						<li>
+							<a href="global.html#start">start</a>
+						</li>
+						
+						<li>
+							<a href="global.html#startOpts">startOpts</a>
+						</li>
+						
+						<li>
+							<a href="global.html#stop">stop</a>
+						</li>
+						
+						<li>
+							<a href="global.html#verifyAppNameIsValid">verifyAppNameIsValid</a>
+						</li>
+						
+
+					</ul>
+				</li>
+				
+			</ul>
+		</div>
+	</div>
+
+	<div class="row-fluid">
+
+		
+			<div class="span12">
+				
+				<div id="main">
+					
+
+
+		<h1 class="page-title">Source: core/deps.js</h1>
     
-
-
-    
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
+<section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript linenums">/**
  * @namespace: kbox.core.deps
  * Module for angularjs style dependency injection.
  * @module deps
@@ -62,7 +214,7 @@ function _remove(name) {
  * deps.clear();
  * assert(!deps.contains('foo'));
  */
-module.exports.clear = function() {
+exports.clear = function() {
   _clear();
 };
 
@@ -74,7 +226,7 @@ module.exports.clear = function() {
  * deps.register('key', 'value');
  * deps.remove('key');
  */
-module.exports.remove = function(name) {
+exports.remove = function(name) {
   _remove(name);
 };
 
@@ -88,7 +240,7 @@ module.exports.remove = function(name) {
  *   deps.register('docker', new Docker(config));
  * }
  */
-module.exports.contains = function(name) {
+exports.contains = function(name) {
   var result = _getDep(name);
   return result !== undefined;
 };
@@ -101,7 +253,7 @@ module.exports.contains = function(name) {
  * var deps = require(...);
  * deps.register('app', new App(config));
  */
-module.exports.register = function(name, dep) {
+exports.register = function(name, dep) {
   if (_getDep(name) !== undefined) {
     var msg = 'Tried to register a dependency "' + name + '" that was already registered.';
     throw new Error(msg);
@@ -128,7 +280,7 @@ module.exports.register = function(name, dep) {
  *   console.log('Dependency does not exist!');
  * }
  */
-module.exports.lookup = function(name, opts) {
+exports.lookup = function(name, opts) {
   var result = _getDep(name);
   if (result !== undefined) {
     return result;
@@ -143,7 +295,7 @@ function _isFlag(name) {
   return (name.substr(0, FLAG_STRING.length) === FLAG_STRING);
 }
 
-module.exports.getFlags = function() {
+exports.getFlags = function() {
   var flags = {};
   for (var dep in _deps) {
     if (_isFlag(dep)) {
@@ -167,7 +319,7 @@ module.exports.getFlags = function() {
  *   assert(deps.lookup('mode') === 'test');
  * });
  */
-module.exports.override = function(overrides, callback) {
+exports.override = function(overrides, callback) {
   var savedValues = {};
   // Save current deps to be restored later.
   for (var key in overrides) {
@@ -195,7 +347,7 @@ var inspect = function(cb) {
     return args;
   }
 };
-module.exports.inspect = inspect;
+exports.inspect = inspect;
 
 /**
  * Calls callback function with auto populated dependencies.
@@ -208,30 +360,109 @@ module.exports.inspect = inspect;
  *   }
  * });
  */
-module.exports.call = function(cb) {
+exports.call = function(cb) {
   var deps = this.inspect(cb).map(this.lookup);
   return cb.apply(cb, deps);
 };
-</code></pre>
-        </article>
-    </section>
+</pre>
+	</article>
+</section>
 
 
 
 
-</div>
 
-<nav>
-    <h2><a href="index.html">Index</a></h2><h3>Modules</h3><ul><li><a href="module-b2d.html">b2d</a></li><li><a href="module-deps.html">deps</a></li><li><a href="module-plugin.html">plugin</a></li><li><a href="module-shell.html">shell</a></li><li><a href="module-task.html">task</a></li></ul><h3>Classes</h3><ul><li><a href="module-task-Task.html">Task</a></li></ul><h3>Global</h3><ul><li><a href="global.html#_startupServiceStart">_startupServiceStart</a></li><li><a href="global.html#App">App</a></li><li><a href="global.html#build">build</a></li><li><a href="global.html#create">create</a></li><li><a href="global.html#createOpts">createOpts</a></li><li><a href="global.html#getApps">getApps</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#kill">kill</a></li><li><a href="global.html#list">list</a></li><li><a href="global.html#manager">manager</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#pull">pull</a></li><li><a href="global.html#pullMany">pullMany</a></li><li><a href="global.html#purgeContainers">purgeContainers</a></li><li><a href="global.html#registerTask">registerTask</a></li><li><a href="global.html#remove">remove</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#startOpts">startOpts</a></li><li><a href="global.html#stop">stop</a></li><li><a href="global.html#verifyAppNameIsValid">verifyAppNameIsValid</a></li></ul>
-</nav>
+				</div>
 
-<br clear="both">
+				<div class="clearfix"></div>
+				<footer>
+					
+					
+		<span class="copyright">
+		Kalabox API Copyright © 2014 Kalamuna and friends
+		</span>
+					<br />
+					
+		<span class="jsdoc-message">
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a>
+		on Thu Jan 1st 2015 using the <a
+			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
+		</span>
+				</footer>
+			</div>
 
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a> on Wed Dec 31 2014 21:18:41 GMT+0000 (UTC)
-</footer>
+			
+			<br clear="both">
+		</div>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+	</div>
+	<!--<script src="scripts/sunlight.js"></script>-->
+	<script src="scripts/docstrap.lib.js"></script>
+	<script src="scripts/bootstrap-dropdown.js"></script>
+	<script src="scripts/toc.js"></script>
+
+	<script>
+		$( function () {
+			$( "[id*='$']" ).each( function () {
+				var $this = $( this );
+
+				$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+			} );
+
+			$( "#toc" ).toc( {
+				anchorName  : function ( i, heading, prefix ) {
+					return $( heading ).attr( "id" ) || ( prefix + i );
+				},
+				selectors   : "h1,h2,h3,h4",
+				showAndHide : false,
+				scrollTo    : "100px"
+			} );
+
+			$( "#toc>ul" ).addClass( "nav nav-pills nav-stacked" );
+			$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+			$( '.dropdown-toggle' ).dropdown();
+//			$( ".tutorial-section pre, .readme-section pre" ).addClass( "sunlight-highlight-javascript" ).addClass( "linenums" );
+
+			$( ".tutorial-section pre, .readme-section pre" ).each( function () {
+				var $this = $( this );
+
+				var example = $this.find( "code" );
+				exampleText = example.html();
+				var lang = /{@lang (.*?)}/.exec( exampleText );
+				if ( lang && lang[1] ) {
+					exampleText = exampleText.replace( lang[0], "" );
+					example.html( exampleText );
+					lang = lang[1];
+				} else {
+					lang = "javascript";
+				}
+
+				if ( lang ) {
+
+					$this
+						.addClass( "sunlight-highlight-" + lang )
+						.addClass( "linenums" )
+						.html( example.html() );
+
+				}
+			} );
+
+			Sunlight.highlightAll( {
+				lineNumbers : true,
+				showMenu : true,
+				enableDoclinks : true
+			} );
+		} );
+	 </script>
+
+
+
+	<!--Navigation and Symbol Display-->
+	
+
+
+	<!--Google Analytics-->
+	
+
 </body>
 </html>

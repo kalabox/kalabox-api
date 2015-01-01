@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Kalabox API Source: util/firewall.js</title>
+	<title>Kalabox API Modules</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -166,49 +166,92 @@
 	<div class="row-fluid">
 
 		
-			<div class="span12">
-				
+		<div class="span8">
+			
 				<div id="main">
 					
 
 
-		<h1 class="page-title">Source: util/firewall.js</h1>
-    
+	<h1 class="page-title">Modules</h1>
 <section>
-	<article>
-		<pre
-			class="sunlight-highlight-javascript linenums">/**
-  * @file
-  */
 
-'use strict';
+<header>
+    <h2>
+    
+    </h2>
+    
+</header>
 
-var shell = require('./shell.js');
-var _ = require('lodash');
-var plist = require('plist');
+<article>
+    <div class="container-overview">
+    
 
-exports.isBlockingAll = function(callback) {
-  var cmd = '/usr/libexec/ApplicationFirewall/socketfilterfw --getblockall';
-  shell.exec(cmd, function(err, data) {
-    if (err) {
-      callback(err);
-    } else if (data === 'Block all DISABLED! \n') {
-      callback(null, false);
-    } else {
-      callback(null, data);
-    }
-  });
-};
+    
+        
 
-exports.isOkay = function(callback) {
-  this.isBlockingAll(function(isBlockingAll) {
-    callback(!isBlockingAll);
-  });
-};
-</pre>
-	</article>
+        
+<dl class="details">
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="module-task-Task.html">Task</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
 </section>
-
 
 
 
@@ -232,6 +275,10 @@ exports.isOkay = function(callback) {
 				</footer>
 			</div>
 
+			
+			<div class="span3">
+				<div id="toc"></div>
+			</div>
 			
 			<br clear="both">
 		</div>
