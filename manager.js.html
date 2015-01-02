@@ -198,6 +198,7 @@ var util = require('../util.js');
 var engine = require('../engine.js');
 var image = engine.image;
 var ctn = engine.container;
+var events = core.events;
 
 var MANAGER_DEP_NAME = 'manager';
 var DOCKER_DEP_NAME = 'docker';
@@ -392,16 +393,20 @@ var init = function(app, done) {
     } else if (alreadyExists) {
       done(err);
     } else {
-      app.emit('pre-init');
-      var components = _.toArray(_.cloneDeep(app.components));
-      vasync.forEachPipeline({
-        'func': cmp.create,
-        'inputs': components
-      }, function(err, results) {
-        app.emit('post-init');
-        if (done) {
-          done(err);
-        }
+      core.deps.call(function(events) {
+        events.emit('pre-init', app, function() {
+          var components = _.toArray(_.cloneDeep(app.components));
+          vasync.forEachPipeline({
+            'func': cmp.create,
+            'inputs': components
+          }, function(err, results) {
+            events.emit('post-init', app, function() {
+              if (done) {
+                done(err);
+              }
+            });
+          });
+        });
       });
     }
   });
@@ -469,72 +474,67 @@ var start = function(app, done) {
         if (err) {
           throw err;
         }
-        app.emit('pre-start');
-        var cmps = app.components;
-        var keys = Object.keys(cmps);
-        forEachContinue(keys,
-          function(key) {
-            return key;
-          },
-          function(key, next) {
-            cmp.start(cmps[key], null, next);
-          },
-          function(errs) {
-            app.emit('post-start');
-            done(errs);
+        core.deps.call(function(events) {
+          events.emit('pre-start', app, function() {
+            var cmps = app.components;
+            var keys = Object.keys(cmps);
+            forEachContinue(keys,
+              function(key) {
+                return key;
+              },
+              function(key, next) {
+                cmp.start(cmps[key], null, next);
+              },
+              function(errs) {
+                events.emit('post-start', app, function() {
+                  done(errs);
+                });
+              });
           });
+        });
       });
   });
 };
 
-/**
- * Start all app containers.
- */
-/*var start_old = function(app, done) {
-  app.emit('pre-start');
-  var components = _.toArray(_.cloneDeep(app.components));
-  vasync.forEachPipeline({
-    'func': cmp.start,
-    'inputs': components
-  }, function(err, results) {
-    app.emit('post-start');
-    if (done) {
-      done(err);
-    }
-  });
-};*/
-
 var stop = function(app, done) {
-  app.emit('pre-stop');
-  var cmps = app.components;
-  var keys = Object.keys(cmps);
-  forEachContinue(keys,
-    function(key) {
-      return key;
-    },
-    function(key, next) {
-      cmp.stop(cmps[key], next);
-    },
-    function(errs) {
-      app.emit('post-stop');
-      done(errs);
+  core.deps.call(function(events) {
+    events.emit('pre-stop', app, function() {
+      var cmps = app.components;
+      var keys = Object.keys(cmps);
+      forEachContinue(keys,
+        function(key) {
+          return key;
+        },
+        function(key, next) {
+          cmp.stop(cmps[key], next);
+        },
+        function(errs) {
+          events.emit('post-stop', app, function() {
+            done(errs);
+          });
+        });
     });
+  });
 };
 
 /**
  * Kill all app containers.
  */
 var kill = function(app, done) {
-  app.emit('pre-kill');
-  var components = _.toArray(_.cloneDeep(app.components));
-  vasync.forEachPipeline({
-    'func': cmp.kill,
-    'inputs': components
-  }, function(err, container) {
-    app.emit('post-kill');
-    if (done) {
-      done(err);
-    }
+  core.deps.call(function(events) {
+    events.emit('pre-kill', app, function() {
+      var components = _.toArray(_.cloneDeep(app.components));
+      vasync.forEachPipeline({
+        'func': cmp.kill,
+        'inputs': components
+      }, function(err, container) {
+        events.emit('post-kill', app, function() {
+          if (done) {
+            done(err);
+          }
+        });
+      });
+    });
   });
 };
 
@@ -542,16 +542,20 @@ var kill = function(app, done) {
  * Remove all app containers.
  */
 var remove = function(app, done) {
-  app.emit('pre-remove');
-  var components = _.toArray(_.cloneDeep(app.components));
-  vasync.forEachPipeline({
-    'func': cmp.remove,
-    'inputs': components
-  }, function(err, results) {
-    app.emit('post-remove');
-    if (done) {
-      done(err);
-    }
+  core.deps.call(function(events) {
+    events.emit('pre-remove', app, function() {
+      var components = _.toArray(_.cloneDeep(app.components));
+      vasync.forEachPipeline({
+        'func': cmp.remove,
+        'inputs': components
+      }, function(err, results) {
+        events.emit('post-remove', app, function() {
+          if (done) {
+            done(err);
+          }
+        });
+      });
+    });
   });
 };
 
@@ -559,17 +563,21 @@ var remove = function(app, done) {
  * Pull all component images.
  */
 var pull = function(app, done) {
-  app.emit('pre-pull');
-  var components = _.filter(app.components, function(component) { return !component.image.build; });
-  var images = _.pluck(components, 'image');
-  vasync.forEachPipeline({
-    'func': image.pull,
-    'inputs': images
-  }, function(err, results) {
-    app.emit('post-pull');
-    if (done) {
-      done(err);
-    }
+  core.deps.call(function(events) {
+    events.emit('pre-pull', app, function() {
+      var components = _.filter(app.components, function(component) { return !component.image.build; });
+      var images = _.pluck(components, 'image');
+      vasync.forEachPipeline({
+        'func': image.pull,
+        'inputs': images
+      }, function(err, results) {
+        events.emit('post-pull', app, function() {
+          if (done) {
+            done(err);
+          }
+        });
+      });
+    });
   });
 };
 
@@ -577,17 +585,21 @@ var pull = function(app, done) {
  * Build all component images.
  */
 var build = function(app, done) {
-  app.emit('pre-build');
-  var components = _.filter(app.components, function(component) { return component.image.build === true; });
-  var images = _.pluck(components, 'image');
-  vasync.forEachPipeline({
-    'func': image.build,
-    'inputs': images
-  }, function(err, results) {
-    app.emit('post-build');
-    if (done) {
-      done(err);
-    }
+  core.deps.call(function(events) {
+    events.emit('pre-build', app, function() {
+      var components = _.filter(app.components, function(component) { return component.image.build === true; });
+      var images = _.pluck(components, 'image');
+      vasync.forEachPipeline({
+        'func': image.build,
+        'inputs': images
+      }, function(err, results) {
+        events.emit('post-build', app, function() {
+          if (done) {
+            done(err);
+          }
+        });
+      });
+    });
   });
 };
 
@@ -679,7 +691,7 @@ module.exports = manager;
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a>
-		on Thu Jan 1st 2015 using the <a
+		on Fri Jan 2nd 2015 using the <a
 			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
