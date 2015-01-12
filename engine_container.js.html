@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Kalabox API Source: util/disk.js</title>
+	<title>Kalabox API Source: engine/container.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -176,50 +176,151 @@
 					
 
 
-		<h1 class="page-title">Source: util/disk.js</h1>
+		<h1 class="page-title">Source: engine/container.js</h1>
     
 <section>
 	<article>
 		<pre
-			class="sunlight-highlight-javascript linenums">/**
-  * @file
-  */
+			class="sunlight-highlight-javascript linenums">'use strict';
 
-'use strict';
+var fs = require('fs');
+var path = require('path');
+var _ = require('lodash');
+var core = require('../core.js');
+var util = require('../util.js');
 
-var shell = require('./shell.js');
-var os = require('os');
-var diskspace = require('diskspace');
+/**
+ * This is our single route into the thing running our infrastructure
+ */
+var engineOpt = function(object, op, args) {
+  //@todo: wrap some events around this motha
+  var fn = object[op];
+  fn.apply(object, args);
+};
 
-exports.getMacVolume = function(callback) {
-  var cmd = 'diskutil info /';
-  shell.exec(cmd, function(err, data) {
-    if (err) {
-      callback(err);
-    } else {
-      var match = data.match(/Volume UUID:[ ]*(.*)\n/);
-      if (match &amp;&amp; match[1]) {
-        callback(null, match[1]);
-      } else {
-        callback(new Error('Mac volume NOT found!'), data);
+/*
+ * A generic method that will one day allow for more than dockerode
+ */
+var getContainer = function(cid) {
+  return core.deps.call(function(docker) {
+    return docker.getContainer(cid);
+  });
+};
+
+/*
+ * A generic method that will one day allow for more than dockerode
+ */
+var getCreator = function() {
+  return core.deps.call(function(docker) {
+    return docker;
+  });
+};
+
+/*
+ * A generic method that will one day allow for more than dockerode
+ */
+var getDefaultArgs = function(callback) {
+  var args = [
+    function(err, data) {callback(err, data);}
+  ];
+  return args;
+};
+
+/**
+ * Creates a generic container with the specified options
+ * @todo : probably want to wrap other app-specific funcs around
+ * this in the future
+ */
+exports.create = function(copts, callback) {
+  var args = [
+    copts,
+    function(err, data) {
+      if (err) {
+        throw err;
       }
+      var container = {};
+      if (data) {
+        // @todo: we need this to start non-app containers until we have CID-files
+        // for startup services
+        if (copts.name) {
+          container = {
+            cid: data.id,
+            name: copts.name
+          };
+        }
+      }
+      callback(err, container);
     }
-  });
+  ];
+  engineOpt(getCreator(), 'createContainer', args);
 };
 
-exports.getTempDir = function() {
-  return '/tmp';
+/**
+ * Starts the container of a specific component.
+ */
+exports.start = function(cid, sopts, callback) {
+  var args = getDefaultArgs(callback);
+  args.unshift(sopts);
+  engineOpt(getContainer(cid), 'start', args);
 };
 
-exports.getFreeSpace = function(callback) {
-  var volume = '/';
-  diskspace.check(volume, function(err, total, free, status) {
-    free = free / 1024 / 1024;
-    if (err === null &amp;&amp; status !== 'READY') {
-      err = new Error('Diskspace error "' + status + '" on volume "' + volume + '"');
+/**
+ * Stops the container of a specific component.
+ */
+exports.stop = function(cid, callback) {
+  engineOpt(getContainer(cid), 'stop', getDefaultArgs(callback));
+};
+
+/**
+ * Kills the container of a specific component.
+ */
+exports.kill = function(cid, callback) {
+  engineOpt(getContainer(cid), 'kill', getDefaultArgs(callback));
+};
+
+/**
+ * Removes the container of a specific component.
+ */
+exports.remove = function(cid, callback) {
+  engineOpt(getContainer(cid), 'remove', getDefaultArgs(callback));
+};
+
+/**
+ * @todo: this probably needs to go somewhere else for now but i am unsure where
+ * @bcauldwell may know the answer.
+ */
+exports.name = {
+  _USER_DEFINED_PREFIX: 'kb',
+  _BUILT_IN_PREFIX: 'kalabox',
+  createUserDefined: function(appName, componentName) {
+    return util.name.create([this._USER_DEFINED_PREFIX, appName, componentName]);
+  },
+  createBuiltIn: function(appName, componentName) {
+    return util.name.create([this._BUILT_IN_PREFIX, appName, componentName]);
+  },
+  parse: function(name) {
+    // remove white space from front of container name
+    var _name = name[0] === ' ' || name[0] === '/' ? name.substring(1) : name;
+    var parts = util.name.parse(_name);
+    if (parts === null) {
+      return null;
+    } else {
+      return {
+        prefix: parts[0],
+        appName: parts[1],
+        componentName: parts[2]
+      };
     }
-    callback(err, free);
-  });
+  },
+  isUserDefined: function(parsed) {
+    return parsed.prefix === this._USER_DEFINED_PREFIX;
+  },
+  isBuiltIn: function(parsed) {
+    return parsed.prefix === this._BUILT_IN_PREFIX;
+  },
+  isKalaboxName: function(parsed) {
+    return this.isUserDefined(parsed) || this.isBuiltIn(parsed);
+  }
 };
 </pre>
 	</article>
@@ -241,8 +342,8 @@ exports.getFreeSpace = function(callback) {
 					<br />
 					
 		<span class="jsdoc-message">
-		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha9</a>
-		on Sat Jan 10th 2015 using the <a
+		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha13</a>
+		on Mon Jan 12th 2015 using the <a
 			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
