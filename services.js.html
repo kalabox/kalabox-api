@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Kalabox API Module: b2d</title>
+	<title>Kalabox API Source: services.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -182,97 +182,58 @@
 	<div class="row-fluid">
 
 		
-		<div class="span8">
-			
+			<div class="span12">
+				
 				<div id="main">
 					
 
 
-	<h1 class="page-title">Module: b2d</h1>
+		<h1 class="page-title">Source: services.js</h1>
+    
 <section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript linenums">'use strict';
 
-<header>
-    <h2>
-    b2d
-    </h2>
-    
-</header>
+/**
+ * Kalabox services module.
+ * @module services
+ */
 
-<article>
-    <div class="container-overview">
-    
+// Start with no implementation
+var services = null;
 
-    
-        
-            <div class="description">Module to wrap and abstract access to boot2docker.</div>
-        
+/**
+ * Require the correct services module
+ */
+exports.init = function(globalConfig) {
+  if (!services) {
+    var serviceName = globalConfig.services;
+    services = require('./services/' + serviceName + '/' + serviceName + '.js');
+  }
+};
 
-        
-<dl class="details">
-	
+/**
+ * Makes sure the core services are running correctly
+ * @arg {object} image - Image object to pull or build.
+ * @arg {function} callback - callback(err, data) - Callback called when the image has been built.
+ */
+exports.verify = function(callback) {
+  services.verify(callback);
+};
 
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="engine_provider_b2d.js.html">engine/provider/b2d.js</a>,
-				 <a href="engine_provider_b2d.js.html#sunlight-1-line-1">line 1</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+/**
+ * Pulls or builds the images for our core services
+ * @arg {object} image - Image object to pull or build.
+ * @arg {function} callback - callback(err, data) - Callback called when the image has been built.
+ */
+exports.install = function(callback) {
+  services.install(callback);
+};
+</pre>
+	</article>
 </section>
+
 
 
 
@@ -296,10 +257,6 @@
 				</footer>
 			</div>
 
-			
-			<div class="span3">
-				<div id="toc"></div>
-			</div>
 			
 			<br clear="both">
 		</div>

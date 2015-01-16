@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Kalabox API Module: b2d</title>
+	<title>Kalabox API Source: engine/provider/b2d.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -182,97 +182,195 @@
 	<div class="row-fluid">
 
 		
-		<div class="span8">
-			
+			<div class="span12">
+				
 				<div id="main">
 					
 
 
-	<h1 class="page-title">Module: b2d</h1>
+		<h1 class="page-title">Source: engine/provider/b2d.js</h1>
+    
 <section>
+	<article>
+		<pre
+			class="sunlight-highlight-javascript linenums">/**
+ * Module to wrap and abstract access to boot2docker.
+ * @module b2d
+ */
 
-<header>
-    <h2>
-    b2d
-    </h2>
-    
-</header>
+'use strict';
 
-<article>
-    <div class="container-overview">
-    
+var B2D_EXECUTABLE = 'boot2docker';
 
-    
-        
-            <div class="description">Module to wrap and abstract access to boot2docker.</div>
-        
+var core = require('../../core.js');
+var events = core.events;
+var fs = require('fs');
+var path = require('path');
 
-        
-<dl class="details">
-	
+var execShellCommand = function(cmd, callback) {
+  core.deps.call(function(shell) {
+    shell.exec(cmd, callback);
+  });
+};
 
-	
+var getProfile = function() {
+  return path.join(core.deps.lookup('config').sysConfRoot, 'b2d.profile');
+};
 
-	
+var setProfile = function(callback) {
+  core.env.setB2dProf(getProfile());
+  callback();
+};
 
-	
+var execCommand = function(cmd, callback) {
+  setProfile(function() {
+    execShellCommand([B2D_EXECUTABLE, cmd].join(' '), callback);
+  });
+};
 
-	
+function removeTrailing(src, s) {
+  var end = src.substr(src.length - s.length, s.length);
+  if (end === s) {
+    return src.substr(0, src.length - s.length);
+  } else {
+    return src;
+  }
+}
 
-	
+function removeTrailingNewline(src) {
+  return removeTrailing(src, '\n');
+}
 
-	
+var recursiveTry = function(cmd, tries, callback) {
+  var rec = function(tries) {
+    execCommand(cmd, function(err, output) {
+      if (err &amp;&amp; tries === 0) {
+        callback(err);
+      } else if (err) {
+        rec(--tries);
+      } else {
+        events.emit('post-' + cmd, null, function() {
+          callback(null, removeTrailingNewline(output));
+        });
+      }
+    });
+  };
+  events.emit('pre-' + cmd, null, function() {
+    rec(tries);
+  });
+};
 
-	
+var up = function(callback) {
+  recursiveTry('init', 3, function(err, output) {
+    if (err) {
+      callback(err, output);
+    } else {
+      recursiveTry('up', 3, callback);
+    }
+  });
+};
 
-	
+var down = function(callback) {
+  recursiveTry('down', 3, callback);
+};
 
+var getStatus = function(callback) {
+  recursiveTry('status', 3, callback);
+};
 
+var getIp = function(callback) {
+  recursiveTry('ip', 3, callback);
+};
 
-	
-	<dt class="tag-source">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="engine_provider_b2d.js.html">engine/provider/b2d.js</a>,
-				 <a href="engine_provider_b2d.js.html#sunlight-1-line-1">line 1</a>
-			</li>
-		</ul>
-	</dd>
-	
+var isUp = function(callback) {
+  getStatus(function(err, status) {
+    if (err) {
+      callback(err);
+    } else if (status === 'running') {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+  });
+};
 
-	
+var isDown = function(callback) {
+  isUp(function(err, isUp) {
+    if (err) {
+      callback(err);
+    } else {
+      callback(null, !isUp);
+    }
+  });
+};
 
-	
+var hasProfile = function(callback) {
+  if (fs.existsSync(getProfile())) {
+    callback(true);
+  } else {
+    callback(false);
+  }
+};
 
-	
-</dl>
+var isInstalled = function(callback) {
+  // @todo: installer should set a uuid file from boot2docker info and then
+  // run 'boot2docker info' and compare the UUID key with the uuid file.
+  var cmd = ['which', B2D_EXECUTABLE].join(' ');
+  execShellCommand(cmd, function(err, output) {
+    if (!err &amp;&amp; output) {
+      hasProfile(function(profile) {
+        if (profile) {
+          callback(null, true);
+        }
+        else {
+          // @todo: probably want to create an error to pass back here
+          callback(null, false);
+        }
+      });
+    } else if (err &amp;&amp; !output) {
+      callback(null, false);
+    } else {
+      callback(err, false);
+    }
+  });
+};
 
+var engineConfig = function(callback) {
+  getIp(function(err, output) {
+    if (err) {
+      callback(err, null);
+    }
+    else {
+      var config = {
+        protocol: 'http',
+        host: output,
+        port: '2375'
+      };
+      callback(null, config);
+    }
+  });
+};
 
-        
-    
-    </div>
+var hasTasks = function(callback) {
+  callback(true);
+};
 
-    
+exports.init = function(intf) {
+  intf.up = up;
+  intf.down = down;
+  intf.isInstalled = isInstalled;
+  intf.isUp = isUp;
+  intf.isDown = isDown;
+  intf.hasTasks = hasTasks;
+  intf.engineConfig = engineConfig;
+  return intf;
+};
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
+exports.name = 'boot2docker';
+</pre>
+	</article>
 </section>
+
 
 
 
@@ -296,10 +394,6 @@
 				</footer>
 			</div>
 
-			
-			<div class="span3">
-				<div id="toc"></div>
-			</div>
 			
 			<br clear="both">
 		</div>

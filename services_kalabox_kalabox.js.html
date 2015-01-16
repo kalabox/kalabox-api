@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Kalabox API Source: b2d.js</title>
+	<title>Kalabox API Source: services/kalabox/kalabox.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -44,7 +44,19 @@
 						</li>
 						
 						<li>
+							<a href="module-kbox.html">kbox</a>
+						</li>
+						
+						<li>
+							<a href="module-kbox_services.html">kbox/services</a>
+						</li>
+						
+						<li>
 							<a href="module-plugin.html">plugin</a>
+						</li>
+						
+						<li>
+							<a href="module-services.html">services</a>
 						</li>
 						
 						<li>
@@ -176,258 +188,153 @@
 					
 
 
-		<h1 class="page-title">Source: b2d.js</h1>
+		<h1 class="page-title">Source: services/kalabox/kalabox.js</h1>
     
 <section>
 	<article>
 		<pre
-			class="sunlight-highlight-javascript linenums">/**
- * Module to wrap and abstract access to boot2docker.
- * @module b2d
+			class="sunlight-highlight-javascript linenums">'use strict';
+
+/**
+ * Kalabox lib -> services -> kbox module.
+ * @module kbox
  */
 
-'use strict';
-
-var fs = require('fs');
 var path = require('path');
-var core = require('./core.js');
-var events = core.events;
+var fs = require('fs');
+var mkdirp = require('mkdirp');
+var core = require('./../../core.js');
+var util = require('./../../util.js');
+var helpers = util.helpers;
+var engine = require('./../../engine.js');
+var serviceInfo = require('./services.js');
 
-var B2D_EXECUTABLE = 'boot2docker';
-
-function getShell() {
-  return core.deps.lookup('shell');
-}
-
-var isInstalled = function(callback) {
-  var cmd = 'which boot2docker';
-  getShell().exec(cmd, function(err, output) {
-    if (!err &amp;&amp; output) {
-      callback(null, true);
-    } else if (err &amp;&amp; !output) {
-      callback(null, false);
-    } else {
-      callback(err, false);
-    }
-  });
-};
-exports.isInstalled = isInstalled;
-
-function verifyB2dInstalled(callback) {
-  isInstalled(function(err, isInstalled) {
-    if (err) {
-      throw err;
-    } else if (!isInstalled) {
-      throw new Error('Boot2docker is NOT installed!');
-    } else {
-      callback();
-    }
-  });
-}
-
-var hasProfile = function(callback) {
-  var B2D_PROFILE = path.join(core.deps.lookup('config').sysConfRoot, 'b2d.profile');
-  if (fs.existsSync(B2D_PROFILE)) {
-    core.env.setB2dProf(B2D_PROFILE);
-    callback(true);
-  } else {
-    callback(false);
-  }
-};
-exports.hasProfile = hasProfile;
-
-function verifyB2dProfile(callback) {
-  hasProfile(function(hasProfile) {
-    if (hasProfile) {
-      callback();
-    } else {
-      throw new Error('You need a Boot2Docker profile. Try kbox install!');
-    }
-  });
-}
-
-function _execB2dCommand(cmd, callback) {
-  getShell().exec(B2D_EXECUTABLE + ' ' + cmd, function(err, output) {
-    if (err) {
-      if (callback) {
-        callback(err, output);
+var isNotRunning = function(service, callback) {
+  var cid = serviceInfo.getCid(service);
+  if (cid !== false) {
+    engine.inspect(cid, function(err, data) {
+      if (err) {
+        callback(err, false);
       }
       else {
-        throw err;
+        callback(null, !data.State.Running);
       }
+    });
+  }
+  else {
+    callback(null, false);
+  }
+};
+
+var installService = function(service, callback) {
+  engine.build(service, function(err) {
+    if (err) {
+      callback(err);
     } else {
-      callback(err, output);
+      if (service.createOpts) {
+        var cidFile = serviceInfo.getCidFile(service);
+        var installOptions = serviceInfo.getInstallOptions(service);
+        engine.create(installOptions, function(err, container) {
+          if (err) {
+            throw err;
+          }
+          if (container) {
+            console.log('installOptions: ' + JSON.stringify(installOptions));
+            fs.writeFileSync(cidFile, container.cid);
+            callback(err);
+          }
+        });
+      }
+      else {
+        callback(null);
+      }
     }
   });
-}
+};
 
-function execB2dCommand(cmd, callback) {
-  verifyB2dInstalled(function() {
-    verifyB2dProfile(function() {
-      _execB2dCommand(cmd, callback);
+var startService = function(service, callback) {
+  var opts = serviceInfo.getStartOptions(service);
+  var cid = serviceInfo.getCid(service);
+  engine.start(cid, opts, function(err) {
+    callback(err);
+  });
+};
+
+var stopService = function(service, callback) {
+  var cid = serviceInfo.getCid(service);
+  engine.stop(cid, function(err) {
+    callback(err);
+  });
+};
+
+var start = function(callback) {
+  helpers.mapAsync(
+    serviceInfo.getStartableServices(),
+    function(service, done) {
+      startService(service, done);
+    },
+    function(errs) {
+      callback(errs);
+    }
+  );
+};
+
+var halt = function(callback) {
+  helpers.mapAsync(
+    serviceInfo.getStartableServices(),
+    function(service, done) {
+      stopService(service, done);
+    },
+    function(errs) {
+      callback(errs);
+    }
+  );
+};
+
+var rebootServices = function(callback) {
+  console.log('Startup services need to be started!');
+  halt(function(err) {
+    start(function(err) {
+      callback(null);
     });
   });
-}
-
-var _down = function(attempts, callback) {
-  execB2dCommand('down', function(err, output) {
-    if (err &amp;&amp; attempts === 0) {
-      throw err;
-    }
-    else if (err &amp;&amp; attempts > 0) {
-      _down(--attempts, callback);
-    }
-    else {
-      events.emit('post-down', null, function() {
-        callback();
-      });
-    }
-  });
 };
 
-/**
- * Stops VM.
- * @arg {function} callback - Callback function called on completion
- * @example
- * var b2d = require(...);
- * b2d.down(function() {
- *   console.log('VM stopped!');
- * });
- */
-exports.down = function(attempts, callback) {
-  events.emit('pre-down', null, function() {
-    _down(attempts, callback);
-  });
-};
-
-var _up = function(attempts, callback) {
-  execB2dCommand('up', function(err, output) {
-    if (err &amp;&amp; attempts === 0) {
-      throw err;
-    }
-    else if (err &amp;&amp; attempts > 0) {
-      _up(--attempts, callback);
-    }
-    else {
-      events.emit('post-up', null, function() {
-        callback();
-      });
-    }
-  });
-};
-
-/**
- * Starts VM.
- * @arg {function} callback - Callback function called on completion
- * @example
- * var b2d = require(...);
- * b2d.up(function() {
- *   console.log('VM is now running!');
- * });
- */
-exports.up = function(attempts, callback) {
-  events.emit('pre-up', null, function() {
-    _up(attempts, callback);
-  });
-};
-
-function removeTrailing(src, s) {
-  var end = src.substr(src.length - s.length, s.length);
-  if (end === s) {
-    return src.substr(0, src.length - s.length);
-  } else {
-    return src;
+exports.install = function(callback) {
+  var cidRoot = serviceInfo.getCidRoot();
+  if (!fs.existsSync(cidRoot)) {
+    mkdirp.sync(cidRoot);
   }
-}
-
-function removeTrailingNewline(src) {
-  return removeTrailing(src, '\n');
-}
-
-/**
- * Queries boot2docker for VM host's status.
- * @arg {function} callback - Callback function called on completion
- * @returns {string} status - Status of VM host
- * @example
- * var b2d = require(...);
- * b2d.status(function(status) {
- *   if (status !== 'running') {
- *     console.log('status: ' + status);
- *   }
- * });
- */
-var state = function(attempts, callback) {
-  execB2dCommand('status', function(err, output) {
-    if (err &amp;&amp; attempts === 0) {
-      throw err;
+  helpers.mapAsync(
+    serviceInfo.getCoreImages(),
+    function(service, done) {
+      installService(service, done);
+    },
+    function(errs) {
+      callback(errs);
     }
-    else if (err &amp;&amp; attempts > 0) {
-      --attempts;
-      state(attempts, callback);
-    }
-    else {
-      var message = removeTrailingNewline(output);
-      // @todo: debug remove
-      callback(message);
-    }
-  });
+  );
 };
-exports.state = state;
 
-/**
- * Queries boot2docker for VM host's IP address.
- * @arg {function} callback - Callback function called on completion
- * @returns {string} ip - IP address
- * @example
- * var b2d = require(...);
- * b2d.ip(function(err, ip) {
- *   console.log('IP address: ' + ip);
- * });
- */
-var ip = function(attempts, callback) {
-  execB2dCommand('ip', function(err, output) {
-    if (err &amp;&amp; attempts === 0) {
-      throw err;
-    }
-    else if (err &amp;&amp; attempts > 0) {
-      --attempts;
-      ip(attempts, callback);
-    }
-    else {
-      var matches = output.match('IP address is: [\n]*(.*)');
-      if (matches &amp;&amp; matches[1]) {
-        callback(null, matches[1]);
-      } else {
-        callback(err, output);
+exports.verify = function(callback) {
+  helpers.findAsync(
+    serviceInfo.getStartableServices(),
+    function(service, done) {
+      isNotRunning(service, done);
+    },
+    function(errs, result) {
+      if (errs) {
+        callback(errs);
+      }
+      else if (result) {
+        rebootServices(callback);
+      }
+      else {
+        callback(null);
       }
     }
-  });
+  );
 };
-exports.ip = ip;
-
-/**
- * Initializes the Boot2docker VM with the users profile config
- * @arg {function} callback - Callback function called on completion
- * @example
- * var b2d = require(...);
- * b2d.init(function(err, init) {
- * });
- */
-var init = function(attempts, callback) {
-  execB2dCommand('init', function(err, output) {
-    if (err &amp;&amp; attempts === 0) {
-      throw err;
-    }
-    else if (err &amp;&amp; attempts > 0) {
-      --attempts;
-      init(attempts, callback);
-    }
-    else {
-      callback(output);
-    }
-  });
-};
-exports.init = init;
 </pre>
 	</article>
 </section>
@@ -449,7 +356,7 @@ exports.init = init;
 					
 		<span class="jsdoc-message">
 		Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-alpha13</a>
-		on Tue Jan 13th 2015 using the <a
+		on Fri Jan 16th 2015 using the <a
 			href="https://github.com/terryweiss/docstrap">DocStrap template</a>.
 		</span>
 				</footer>
