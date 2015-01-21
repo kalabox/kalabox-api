@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes, width=device-width">
-  <title>Oblivion — Module: services</title>
+  <title>Kalabox API — Module: services</title>
   <link rel="shortcut icon" href="/favicon.ico">
 
   <!--[if lt IE 9]>
@@ -18,7 +18,7 @@
 <div class="container-fluid">
   <div class="navbar navbar-fixed-top navbar-inverse">
     <div class="navbar-inner">
-      <a class="brand" href="index.html">Oblivion</a>
+      <a class="brand" href="index.html">Kalabox API</a>
       <ul class="nav">
         
         <li class="dropdown">
@@ -33,6 +33,14 @@
             
             <li>
               <a href="plugin.html">kbox.core.plugin</a>
+            </li>
+            
+            <li>
+              <a href="tasks.html">kbox.core.tasks</a>
+            </li>
+            
+            <li>
+              <a href="provider.html">kbox.engine.provider</a>
             </li>
             
             <li>
@@ -104,7 +112,19 @@
 
     
         
-            <div class="description">Kalabox services module.</div>
+            <div class="description">Kalabox allows the spin up of additional containers that may be needed to
+support apps running correctly. By default Kalabox ships with a default
+set of services, called "kalabox" to allow for better intra-container
+communication and reverse proxying.
+
+Kalabox uses the following interface which the default set of services
+implements. You can easily define your own set of services using the default
+ones as an example. To do so you will want to edit your global config file
+to change the services key with your own and then add a folder and modules
+into the services folder using the name set in the global config. For example
+if you are using 'kalabox' as your set of services then you would expect to
+see a folder named 'kalabox' in the services folder and a module named
+kalabox.js</div>
         
 
         
@@ -169,7 +189,8 @@
     
     
     <div class="description">
-        Require the correct services module
+        Loads the corrects services module based on the value of the 'services' key
+in the global config.
     </div>
     
 
@@ -274,8 +295,23 @@
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">var config = kbox.core.config.getGlobalConfig();
-kbox.services.init(config);</pre>
+    <pre class="sunlight-highlight-javascript">var DEFAULT_GLOBAL_CONFIG = {
+  domain: &#x27;kbox&#x27;,
+  engine: &#x27;docker&#x27;,
+  services: &#x27;MYSERVICE&#x27;,
+  kboxRoot: &#x27;:home:&#x2F;kalabox&#x27;,
+  codeRoot: &#x27;:kboxRoot:&#x2F;code&#x27;,
+  kalaboxRoot: &#x27;:kboxRoot:&#x27;,
+  appsRoot: &#x27;:kboxRoot:&#x2F;apps&#x27;,
+  globalPluginRoot: &#x27;:kboxRoot:&#x2F;plugins&#x27;,
+  globalPlugins: [
+    &#x27;hipache&#x27;,
+    &#x27;kalabox_core&#x27;,
+    &#x27;kalabox_install&#x27;,
+    &#x27;kalabox_app&#x27;,
+    &#x27;kalabox_provider&#x27;
+  ]
+};</pre>
 
 
     
@@ -284,7 +320,7 @@ kbox.services.init(config);</pre>
         
             
 <dt>
-    <h4 class="name" id="install"><span class="type-signature">&lt;static> </span>install<span class="signature">(image, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="install"><span class="type-signature">&lt;static> </span>install<span class="signature">(callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -292,7 +328,7 @@ kbox.services.init(config);</pre>
     
     
     <div class="description">
-        Pulls or builds the images for our core services
+        Installs and creates all the containers needed for the services
     </div>
     
 
@@ -326,29 +362,6 @@ kbox.services.init(config);</pre>
   
           <tr>
               
-                  <td class="name"><code>image</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Image object to pull or build.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
                   <td class="name"><code>callback</code></td>
               
   
@@ -365,7 +378,7 @@ kbox.services.init(config);</pre>
   
               
   
-              <td class="description last">Callback called when the image has been built.
+              <td class="description last">Callback called when the services have been installed and created.
                   <h6>Properties</h6>
                   
 <div class="params-table-container">
@@ -407,7 +420,7 @@ kbox.services.init(config);</pre>
   
               
   
-              <td class="description last">Array of errors from building of services.</td>
+              <td class="description last">Array of errors from installing of services.</td>
           </tr>
   
     
@@ -468,12 +481,22 @@ kbox.services.init(config);</pre>
     
     
     
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">services.install(function() {
+  log.info(&#x27;Core services installed.&#x27;);
+    next(null);
+  });
+}</pre>
+
+
+    
 </dd>
 
         
             
 <dt>
-    <h4 class="name" id="verify"><span class="type-signature">&lt;static> </span>verify<span class="signature">(image, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="verify"><span class="type-signature">&lt;static> </span>verify<span class="signature">(callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -481,7 +504,8 @@ kbox.services.init(config);</pre>
     
     
     <div class="description">
-        Makes sure the core services are running correctly
+        Makes sure that the services module has all their containers up and running
+before an app is started or stopped.
     </div>
     
 
@@ -515,29 +539,6 @@ kbox.services.init(config);</pre>
   
           <tr>
               
-                  <td class="name"><code>image</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Image object to pull or build.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
                   <td class="name"><code>callback</code></td>
               
   
@@ -554,7 +555,7 @@ kbox.services.init(config);</pre>
   
               
   
-              <td class="description last">Callback called when the image has been built.
+              <td class="description last">Callback called when the services have been started.
                   <h6>Properties</h6>
                   
 <div class="params-table-container">
@@ -657,6 +658,19 @@ kbox.services.init(config);</pre>
     
     
     
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">services.verify(function(err) {
+  if (err) {
+    callback(err);
+  }
+  else {
+    someFunctionThatDoesAppThingsThatRequireServicesToBeStarted();
+  }
+});</pre>
+
+
+    
 </dd>
 
         </dl>
@@ -679,13 +693,13 @@ kbox.services.init(config);</pre>
           
           
     <span class="copyright">
-    Copyright © 2014
+    Copyright © 2014 Kalamuna and friends
     </span>
           <br />
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.2.2</a>
-    on 2015-01-20T23:10:53+00:00
+    on 2015-01-21T03:37:20+00:00
     </span>
         </footer>
       </div>

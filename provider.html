@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes, width=device-width">
-  <title>Kalabox API — Module: app</title>
+  <title>Kalabox API — Module: provider</title>
   <link rel="shortcut icon" href="/favicon.ico">
 
   <!--[if lt IE 9]>
@@ -96,12 +96,12 @@
           
 
 
-	<h1 class="page-title">Module: app</h1>
+	<h1 class="page-title">Module: provider</h1>
 <section>
 
 <header>
     <h2>
-    app
+    provider
     </h2>
     
 </header>
@@ -112,7 +112,14 @@
 
     
         
-            <div class="description">Module for interacting with and managing user defined apps.</div>
+            <div class="description">Kalabox defines providers as OS-specific ways to install the underlying
+dependencies to run the engine specificed in the global config. For example
+the Docker engine uses the boot2docker provider to install the docker
+dependencies for Windows and OSX. It also (eventually) will contain another
+provider for Linux.
+
+Kalabox uses the following interface to define methods that a provider must
+implement to be used.</div>
         
 
         
@@ -169,7 +176,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="install"><span class="type-signature">&lt;static> </span>install<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="down"><span class="type-signature">&lt;static> </span>down<span class="signature">(callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -177,834 +184,7 @@
     
     
     <div class="description">
-        Installs an app's components.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>app</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">App object you want to install.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback called when the app has been installed.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>errors</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">array</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Array of errors from installing components.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">kbox.app.install(app, function(errs) {
-  if (errs) {
-    throw errs;
-  } else {
-    console.log(&#x27;App installed.&#x27;);
-  }
-});</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="restart"><span class="type-signature">&lt;static> </span>restart<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Stops and then starts an app's components.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>app</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">App object you want to restart.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback called when the app has been restarted.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>errors</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">array</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Array of errors from restarting components.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">kbox.app.restart(app, function(errs) {
-  if (errs) {
-    throw errs;
-  } else {
-    console.log(&#x27;App Restarted.&#x27;);
-  }
-});</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="uninstall"><span class="type-signature">&lt;static> </span>uninstall<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Uninstalls an app's components.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>app</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">App object you want to uninstall.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback called when the app has been uninstalled.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>errors</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">array</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Array of errors from uninstalling components.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">kbox.app.uninstall(app, function(errs) {
-  if (errs) {
-    throw errs;
-  } else {
-    console.log(&#x27;App uninstalled.&#x27;);
-  }
-});</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="get"><span class="type-signature">&lt;inner> </span>get<span class="signature">(appName, callback)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Get an app object from an app's name.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>appName</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">string</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">App name for the app you want to get.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback function called when the app is got.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>error</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">error</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Error from getting the app.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>app</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type"><a href="global.html#app">app</a></span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">App object.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">kbox.app.get(&#x27;myapp&#x27;, function(err, app) {
-  if (err) {
-    throw err;
-  } else {
-    console.log(app.config);
-  }
-});</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="list"><span class="type-signature">&lt;inner> </span>list<span class="signature">(callback)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Lists all the users apps known to Kalabox.
+        Deactivates the provider.
     </div>
     
 
@@ -1054,7 +234,7 @@
   
               
   
-              <td class="description last">Callback called when query for apps is complete.
+              <td class="description last">Callback called after the provider is deactivated.
                   <h6>Properties</h6>
                   
 <div class="params-table-container">
@@ -1103,13 +283,13 @@
   
           <tr>
               
-                  <td class="name"><code>apps</code></td>
+                  <td class="name"><code>output</code></td>
               
   
               <td class="type">
               
                   
-<span class="param-type"><a href="global.html#app">app</a>.&lt;array></span>
+<span class="param-type">output</span>
 
 
               
@@ -1119,7 +299,7 @@
   
               
   
-              <td class="description last">Array of apps.</td>
+              <td class="description last"></td>
           </tr>
   
     
@@ -1182,13 +362,1023 @@
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">kbox.app.list(function(err, apps) {
+    <pre class="sunlight-highlight-javascript">provider.down(function(err, output) {
+  log.info(output);
+  callback(null);
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="engineConfig"><span class="type-signature">&lt;static> </span>engineConfig<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Callsback with error or with the config needed to instantiate an engine instance.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Callback called after an attempt to grab the engine config.
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>error</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">error</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last"></td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>config</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">config</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last"></td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">provider.engineConfig(function(err, config) {
+  if (err) {
+    callback(err);
+  }
+  else {
+    engine.init(config);
+    engineHasBeenInit = true;
+    callback(null);
+  }
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="hasTasks"><span class="type-signature">&lt;static> </span>hasTasks<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Callsback with error or whether the provider has tasks to run or not
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Callback called after the provider is put into a ready state.
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>error</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">error</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last"></td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>output</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">output</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last"></td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">if (engine.provider.hasTasks) {
+  &#x2F;&#x2F; Tasks
+  &#x2F;&#x2F; Start the kalabox engine
+  tasks.registerTask(&#x27;up&#x27;, function(done) {
+    engine.up(PROVIDER_UP_ATTEMPTS, done);
+  });
+
+  &#x2F;&#x2F; Stop the kalabox engine
+  tasks.registerTask(&#x27;down&#x27;, function(done) {
+    engine.down(PROVIDER_DOWN_ATTEMPTS, done);
+  });
+
+  &#x2F;&#x2F; Events
+  events.on(&#x27;post-up&#x27;, function(done) {
+    console.log(chalk.green(&#x27;Kalabox engine has been activated.&#x27;));
+    done();
+  });
+
+  events.on(&#x27;post-down&#x27;, function(done) {
+    console.log(chalk.red(&#x27;Kalabox engine has been deactivated.&#x27;));
+    done();
+  });
+}</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="isDown"><span class="type-signature">&lt;static> </span>isDown<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Callsback with error or whether the provider is deactivated or not.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Callback called after the provider is deactivated.
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>err</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">err</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last"></td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>isInstalled</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">output</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last"></td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="isInstalled"><span class="type-signature">&lt;static> </span>isInstalled<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Callsback with error or whether the provider has been installed or not.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Callback called after the provider is deactivated.
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>err</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">err</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last"></td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>isInstalled</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">output</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last"></td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">provider.isInstalled(function(err, isInstalled) {
+  if (err) {
+    callback(err);
+  } else if (!isInstalled) {
+    callback(makeProviderError(&#x27;is NOT installed!&#x27;));
+  } else {
+    isProviderInstalled = true;
+    callback(null);
+  }
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="isUp"><span class="type-signature">&lt;static> </span>isUp<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Callsback with error or whether the provider is activated or not.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Callback called after the provider is deactivated.
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>err</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">err</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last"></td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>isUp</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">output</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last"></td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">kbox.engine.isUp(function(err, isUp) {
   if (err) {
     throw err;
-  } else {
-    apps.forEach(function(app) {
-      console.log(app.name);
-    });
+  } else if (isUp) {
+    console.log(&#x27;It is up!&#x27;);
   }
 });</pre>
 
@@ -1199,7 +1389,7 @@
         
             
 <dt>
-    <h4 class="name" id="start"><span class="type-signature">&lt;inner> </span>start<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="up"><span class="type-signature">&lt;static> </span>up<span class="signature">(callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1207,7 +1397,7 @@
     
     
     <div class="description">
-        Starts an app's components.
+        Activates the provider to be in state to run engine commands.
     </div>
     
 
@@ -1241,29 +1431,6 @@
   
           <tr>
               
-                  <td class="name"><code>app</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">App object you want to start.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
                   <td class="name"><code>callback</code></td>
               
   
@@ -1280,7 +1447,7 @@
   
               
   
-              <td class="description last">Callback called when the app has been started.
+              <td class="description last">Callback called after the provider is put into a ready state.
                   <h6>Properties</h6>
                   
 <div class="params-table-container">
@@ -1306,13 +1473,13 @@
   
           <tr>
               
-                  <td class="name"><code>errors</code></td>
+                  <td class="name"><code>error</code></td>
               
   
               <td class="type">
               
                   
-<span class="param-type">array</span>
+<span class="param-type">error</span>
 
 
               
@@ -1322,7 +1489,30 @@
   
               
   
-              <td class="description last">Array of errors from starting components.</td>
+              <td class="description last"></td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>output</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">output</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last"></td>
           </tr>
   
     
@@ -1385,213 +1575,9 @@
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">kbox.app.start(app, function(errs) {
-  if (errs) {
-    throw errs;
-  } else {
-    console.log(&#x27;App started.&#x27;);
-  }
-});</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="stop"><span class="type-signature">&lt;inner> </span>stop<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Stops an app's components.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>app</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">App object you want to stop.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback called when the app has been stopped.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>errors</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">array</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Array of errors from stopping components.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">kbox.app.stop(app, function(errs) {
-  if (errs) {
-    throw errs;
-  } else {
-    console.log(&#x27;App stopped.&#x27;);
-  }
+    <pre class="sunlight-highlight-javascript">provider.up(function(err, output) {
+  log.info(output);
+  next(null);
 });</pre>
 
 
