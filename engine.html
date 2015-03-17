@@ -234,6 +234,141 @@ however it would be provided by boot2docker.</div>
     
 </dd>
 
+        
+            
+<dt class="name" id="query">
+    <h4><span class="type-signature">&lt;inner> </span>query<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Queries a container and returns a stream
+    </div>
+    
+
+    
+
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">var image = &#x27;kalabox&#x2F;syncthing:stable&#x27;;
+var cmd = [&#x27;ls&#x27;, &#x27;-l&#x27;];
+kbox.engine.queryData(container, cmd, function(err, stream) {
+  if (err) {
+    throw err;
+  } else {
+    stream.on(&#x27;data&#x27;, function(buffer) {
+      console.log(buffer.toString());
+    });
+    stream.on(&#x27;error&#x27;, function(err) {
+      throw err;
+    });
+  }
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt class="name" id="queryData">
+    <h4><span class="type-signature">&lt;inner> </span>queryData<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Queries a container and returns a string
+    </div>
+    
+
+    
+
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">var image = &#x27;kalabox&#x2F;syncthing:stable&#x27;;
+var cmd = [&#x27;ls&#x27;, &#x27;-l&#x27;];
+kbox.engine.queryData(container, cmd, function(err, data) {
+  if (err) {
+    throw err;
+  } else {
+    console.log(data);
+  }
+});</pre>
+
+
+    
+</dd>
+
         </dl>
     
 
@@ -1458,278 +1593,6 @@ kbox.engine.init(globalConfig);</pre>
         
             
 <dt>
-    <h4 class="name" id="queryString"><span class="type-signature">&lt;static> </span>queryString<span class="signature">(image, cmd, startOptions, createOptions, callback)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Queries a container and returns a string
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>image</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">string</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Name of image to run query in</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>cmd</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">string</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Command (query) to run</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>startOptions</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">[optional] - Object containing the start options for the container.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>createOptions</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">[optional] - Object containing the create options for the container.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback called when the container has been started.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>error</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">error</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last"></td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">var image = &#x27;kalabox&#x2F;syncthing:stable&#x27;;
-var cmd = &#x27;&#x2F;bin&#x2F;ls&#x27;;
-kbox.engine.queryString(image, cmd, {}, {}, function(err, data) {
-  if (err) {
-    throw err;
-  } else {
-    console.log(data);
-  }
-});</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt>
     <h4 class="name" id="remove"><span class="type-signature">&lt;static> </span>remove<span class="signature">(containerId, callback)</span><span class="type-signature"></span></h4>
     
     
@@ -2822,7 +2685,7 @@ engine things.
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.2.2</a>
-    on 2015-03-13T22:38:24+00:00
+    on 2015-03-17T00:14:21+00:00
     </span>
         </footer>
       </div>
