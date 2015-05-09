@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes, width=device-width">
-  <title>Kalabox API — Module: config</title>
+  <title>Kalabox API — Module: shell</title>
   <link rel="shortcut icon" href="/favicon.ico">
 
   <!--[if lt IE 9]>
@@ -114,12 +114,12 @@
           
 
 
-	<h1 class="page-title">Module: config</h1>
+	<h1 class="page-title">Module: shell</h1>
 <section>
 
 <header>
     <h2>
-    config
+    shell
     </h2>
     
 </header>
@@ -130,7 +130,7 @@
 
     
         
-            <div class="description">Module for global and app configs.</div>
+            <div class="description">Module to loosely coupled shell execution.</div>
         
 
         
@@ -187,7 +187,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="getAppConfig"><span class="type-signature">&lt;static> </span>getAppConfig<span class="signature">(app, appRoot)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="exec"><span class="type-signature">&lt;static> </span>exec<span class="signature">(cmd, callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -195,10 +195,7 @@
     
     
     <div class="description">
-        Gets the app config for an app. The app config is a combination of the
-  environment config, the default config, any values overriden in the
-  $HOME/.kalabox/kalabox.json config file, and the kalabox.json config
-  file in the app's root directory.
+        Executes a shell command.
     </div>
     
 
@@ -232,7 +229,7 @@
   
           <tr>
               
-                  <td class="name"><code>app</code></td>
+                  <td class="name"><code>cmd</code></td>
               
   
               <td class="type">
@@ -248,20 +245,20 @@
   
               
   
-              <td class="description last">The name of the app you'd like to get the config for.</td>
+              <td class="description last">The shell command to run.</td>
           </tr>
   
     
   
           <tr>
               
-                  <td class="name"><code>appRoot</code></td>
+                  <td class="name"><code>callback</code></td>
               
   
               <td class="type">
               
                   
-<span class="param-type">string</span>
+<span class="param-type">function</span>
 
 
               
@@ -271,8 +268,7 @@
   
               
   
-              <td class="description last">[optional] - Directory to load the
-app's config file from.</td>
+              <td class="description last">Callback function that is called on completion.</td>
           </tr>
   
     
@@ -323,135 +319,18 @@ app's config file from.</td>
     
     
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    config - The app's kalabox app config.
-</div>
-
-
-
-<dl>
-  <dt>
-    Type
-  </dt>
-  <dd>
-    
-<span class="param-type">object</span>
-
-
-  </dd>
-</dl>
-
-
-        
     
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">var appConfig = kbox.core.config.getAppConfig(&#x27;myapp&#x27;);
-&#x2F;&#x2F; Print the entire app config.
-console.log(JSON.stringify(appConfig, null, &#x27;\t&#x27;));</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getDefaultConfig"><span class="type-signature">&lt;static> </span>getDefaultConfig<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the default config. The default config is a combination of the
-  environment config and a set of default config values.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    config - The kalabox default config.
-</div>
-
-
-
-<dl>
-  <dt>
-    Type
-  </dt>
-  <dd>
-    
-<span class="param-type">object</span>
-
-
-  </dd>
-</dl>
-
-
-        
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">var defaultConfig = kbox.core.config.getDefaultConfig();
-&#x2F;&#x2F; Print global plugins
-defaultConfig.globalPlugins.forEach(function(plugin) {
-  console.log(plugin)  ;
+    <pre class="sunlight-highlight-javascript">var shell = require(...);
+var cmd = &#x27;which kbox&#x27;;
+shell.exec(cmd, function(err, output) {
+  if (err) {
+    throw err;
+  } else {
+    console.log(output);
+  }
 });</pre>
 
 
@@ -461,7 +340,7 @@ defaultConfig.globalPlugins.forEach(function(plugin) {
         
             
 <dt>
-    <h4 class="name" id="getEnvConfig"><span class="type-signature">&lt;static> </span>getEnvConfig<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="execAdmin"><span class="type-signature">&lt;static> </span>execAdmin<span class="signature">(command, callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -469,7 +348,7 @@ defaultConfig.globalPlugins.forEach(function(plugin) {
     
     
     <div class="description">
-        Gets the kalabox environment config.
+        Executes a command that requires admin permissions
     </div>
     
 
@@ -477,6 +356,79 @@ defaultConfig.globalPlugins.forEach(function(plugin) {
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>command</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">string</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">The shell command to run.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Callback function that is called on completion.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
     
     
     
@@ -520,36 +472,19 @@ defaultConfig.globalPlugins.forEach(function(plugin) {
     
     
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    config - The kalabox enviroment config.
-</div>
-
-
-
-<dl>
-  <dt>
-    Type
-  </dt>
-  <dd>
-    
-<span class="param-type">object</span>
-
-
-  </dd>
-</dl>
-
-
-        
     
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">var envConfig = kbox.core.config.getEnvConfig();
-&#x2F;&#x2F; Print home directory to stdout.
-console.log(envConfig.home);</pre>
+    <pre class="sunlight-highlight-javascript">var shell = require(...);
+var cmd = &#x27;which kbox&#x27;;
+shell.exec(cmd, function(err, output) {
+  if (err) {
+    throw err;
+  } else {
+    console.log(output);
+  }
+});</pre>
 
 
     
@@ -558,7 +493,7 @@ console.log(envConfig.home);</pre>
         
             
 <dt>
-    <h4 class="name" id="getGlobalConfig"><span class="type-signature">&lt;static> </span>getGlobalConfig<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="execAdminAsync"><span class="type-signature">&lt;static> </span>execAdminAsync<span class="signature">(command)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -566,9 +501,7 @@ console.log(envConfig.home);</pre>
     
     
     <div class="description">
-        Gets the global config. The global config is a combination of the
-  environment config, the default config, and any values overriden
-  in the $HOME/.kalabox/kalabox.json config file.
+        Executes a command that requires admin permissions
     </div>
     
 
@@ -576,6 +509,56 @@ console.log(envConfig.home);</pre>
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>command</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">string</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">The shell command to run.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
     
     
     
@@ -619,36 +602,149 @@ console.log(envConfig.home);</pre>
     
     
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    config - The kalabox global config.
-</div>
-
-
-
-<dl>
-  <dt>
-    Type
-  </dt>
-  <dd>
-    
-<span class="param-type">object</span>
-
-
-  </dd>
-</dl>
-
-
-        
     
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">var globalConfig = kbox.core.config.getGlobalConfig();
-&#x2F;&#x2F; Print the entire global config.
-console.log(JSON.stringify(globalConfig, null, &#x27;\t&#x27;));</pre>
+    <pre class="sunlight-highlight-javascript">var shell = require(...);
+var cmd = &#x27;which kbox&#x27;;
+shell.exec(cmd, function(err, output) {
+  if (err) {
+    throw err;
+  } else {
+    console.log(output);
+  }
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="execAsync"><span class="type-signature">&lt;static> </span>execAsync<span class="signature">(cmd)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Executes a shell command.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>cmd</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">string</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">The shell command to run.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">var shell = require(...);
+var cmd = &#x27;which kbox&#x27;;
+shell.exec(cmd, function(err, output) {
+  if (err) {
+    throw err;
+  } else {
+    console.log(output);
+  }
+});</pre>
 
 
     
@@ -680,7 +776,7 @@ console.log(JSON.stringify(globalConfig, null, &#x27;\t&#x27;));</pre>
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.2.2</a>
-    on 2015-05-09T00:48:40+00:00
+    on 2015-05-09T00:48:41+00:00
     </span>
         </footer>
       </div>

@@ -36,7 +36,11 @@
             </li>
             
             <li>
-              <a href="plugin.html">kbox.core.plugin</a>
+              <a href="events.html">kbox.core.events</a>
+            </li>
+            
+            <li>
+              <a href="tasks.html">kbox.core.tasks</a>
             </li>
             
             <li>
@@ -48,11 +52,43 @@
             </li>
             
             <li>
+              <a href="create.html">kbox.create</a>
+            </li>
+            
+            <li>
               <a href="engine.html">kbox.engine</a>
             </li>
             
             <li>
+              <a href="install.html">kbox.install</a>
+            </li>
+            
+            <li>
               <a href="services.html">kbox.services</a>
+            </li>
+            
+            <li>
+              <a href="update.html">kbox.update</a>
+            </li>
+            
+            <li>
+              <a href="firewall.html">kbox.util.firewall</a>
+            </li>
+            
+            <li>
+              <a href="internet.html">kbox.util.internet</a>
+            </li>
+            
+            <li>
+              <a href="npm.html">kbox.util.npm</a>
+            </li>
+            
+            <li>
+              <a href="shell.html">kbox.util.shell</a>
+            </li>
+            
+            <li>
+              <a href="module-kbox.html">kbox</a>
             </li>
             
 
@@ -101,6 +137,101 @@
 
 
 
+    <section class="readme-section">
+        <article><h1>Kalabox</h1>
+<p>A framework to build reusable, super fast, highly customizable, extensible and local integrated workflow solutions for all kinds of apps. <strong>You can think about Kalabox as a super-fast, highly-customizable Vagrant for containers.</strong></p>
+<p>With Kalabox you can</p>
+<ul>
+<li>Easily spin up a containerized infrastructure to develop your site or app.</li>
+<li>Develop, provision and deploy super quickly.</li>
+<li>Standardize your teams dev environments and tools on OSX, Windows and Linux.</li>
+<li>Easily customize or extend tooling, deployment options and bascially any other functionality.</li>
+</ul>
+<p>For more info on how you can do some of the above check out the <a href="https://github.com/kalabox/kalabox/wiki">wiki</a>.</p>
+<p><strong>This project is currently under heavy development and is changing quickly.</strong></p>
+<h2>Installation</h2>
+<p>Please make sure that you have installed <a href="http://nodejs.org/">nodejs</a> first!</p>
+<pre><code class="lang-bash">npm install kalabox -g
+kbox provision</code></pre>
+<p>If you've already installed Kalabox and it's pre-version 0.6.0 you should consider
+<a href="https://github.com/kalabox/kalabox/wiki/Uninstalling-Kalabox/">uninstalling</a> first. If you're running 0.6.0 or higher check out the easy <a href="https://github.com/kalabox/kalabox/wiki/Updating-Kalabox">update</a> guide.</p>
+<p>If you are interested in contributing to the project check out the <a href="https://github.com/kalabox/kalabox/wiki/Contribution-Guide">developer installation guide</a>.</p>
+<h2>Kbox commands</h2>
+<p>You can run <code>kbox</code> at any point to see the usage, commands and options available to you. You will also get additional commands when you are in an app folder.</p>
+<p>Here is an example of <code>kbox</code> from a non-app directory.</p>
+<pre><code>kbox
+
+Usage: kbox &lt;command&gt; [-- &lt;options&gt;]
+
+Examples:
+  kbox apps -- -h
+  kbox config -- --verbose
+
+Commands:
+  apps            Display list of apps.
+  config          Display the kbox configuration.
+  containers      Display list of all installed kbox containers.
+  create
+      backdrop    Creates a backdrop app.
+      drupal      Creates a Drupal app.
+  down            Bring kbox container engine down.
+  ip              Display kbox container engine's ip address.
+  provision       Install or update kbox and it's dependencies.
+  query           Run a command against a container.
+  shields         Shield generator operation.
+  status          Display status of kbox container engine.
+  up              Bring kbox container engine up.
+  version         Display the kbox version.
+
+Options:
+  -h, --help     Display help message.                                 [boolean]
+  -v, --verbose  Use verbose output.                                   [boolean]</code></pre>
+<p>And specific command help.</p>
+<pre><code>kbox create drupal -- -h
+
+Options:
+  -h, --help       Display help message.                               [boolean]
+  -v, --verbose    Use verbose output.                                 [boolean]
+  --name           The name of your app.                                [string]
+  --php-version    Your php version.                                    [string]
+  --drush-version  The version of drush that you want.                  [string]
+  --git-username   Your git username.                                   [string]
+  --git-email      Your git email.                                      [string]
+  -i, --install    Auto install app after creation.                    [boolean]
+  --build-local    Build images locally instead of pulling them remotely.
+                                                                       [boolean]
+  -s, --start      Auto start app after creation. Requires --install.  [boolean]
+  --dir            Creates the app in this directory. Defaults to CWD.  [string]</code></pre>
+<h2>Getting started</h2>
+<p>Kalabox is all about quickly setting up repeatable sets of infrastructure so you can start developing the next best thing. While you can <a href="https://github.com/kalabox/kalabox/wiki/Creating-custom-apps">manually create your own apps and profiles</a> to use in your own custom Kalabox we've put together some basic ones to get you started with your Drupal or Backdrop project.</p>
+<pre><code>cd /dir/i/want/my/app/to/live
+kbox create backdrop --name=&quot;My App&quot;
+cd my-app
+kbox install &amp;&amp; kbox start
+kbox # This will list all the fun commands you get in your app
+cd code # This is where your code can live.</code></pre>
+<p>You can also pass in a bunch of options so make sure to check out the options for each create task by running it with <code>-- -h</code> first. <strong>In coming releases it will also be super easy to import your app or site from places like Pantheon and Microsoft Azure.</strong></p>
+<h2>Sharing</h2>
+<p>Kalabox uses syncthing for sharing. Syncthing is a nifty p2p client written in Go that works kind of like a bi-directional auto rsync. This enables our apps to run super fast compared to something like NFS. You can turn sharing off by editing the <code>sharing</code> key in your global or user config file.</p>
+<p>When you start an app you will get a folder inside your app called <code>code</code> which is where you should put your code files. For example if this were a Drupal app you would probably want to git clone the drupal project inside of <code>code</code>.</p>
+<p>If you are importing a massive payload of files it may take a bit for everything to sync up. You can mitigate this by putting your code into the container first. If you arent seeing the code you think you should be seeing you can check out the syncthing UI on both your local machine or kalabox by going to the following places in your browser.</p>
+<pre><code>10.13.37.42:60008 # Kalabox Syncthing
+127.0.0.1:60008 # Local Syncthing</code></pre>
+<p>Syncthing is also still in development so if you are experiencing trouble check out our <a href="https://github.com/kalabox/kalabox/wiki/Syncthing-Guide">syncthing guide</a>.</p>
+<h2>Other Resources</h2>
+<ul>
+<li><a href="http://api.kalabox.me/">API docs</a></li>
+<li><a href="http://coverage.kalabox.me/">Test coverage reports</a></li>
+<li><a href="http://ci.kalabox.me/">Kalabox CI dash</a></li>
+<li><a href="https://www.youtube.com/watch?v=tkBVDh7my9Q">Mountain climbing advice</a></li>
+<li><a href="https://github.com/boot2docker/boot2docker">Boot2Docker</a></li>
+<li><a href="https://github.com/syncthing/syncthing">Syncthing</a></li>
+<li><a href="https://github.com/docker/docker">Docker</a></li>
+</ul>
+<hr>
+<p>(C) 2015 Kalamuna and friends and things</p></article>
+    </section>
+
 
 
 
@@ -120,7 +251,7 @@
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.2.2</a>
-    on 2015-04-24T20:32:36+00:00
+    on 2015-05-09T00:48:40+00:00
     </span>
         </footer>
       </div>

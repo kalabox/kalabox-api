@@ -36,7 +36,11 @@
             </li>
             
             <li>
-              <a href="plugin.html">kbox.core.plugin</a>
+              <a href="events.html">kbox.core.events</a>
+            </li>
+            
+            <li>
+              <a href="tasks.html">kbox.core.tasks</a>
             </li>
             
             <li>
@@ -48,11 +52,43 @@
             </li>
             
             <li>
+              <a href="create.html">kbox.create</a>
+            </li>
+            
+            <li>
               <a href="engine.html">kbox.engine</a>
             </li>
             
             <li>
+              <a href="install.html">kbox.install</a>
+            </li>
+            
+            <li>
               <a href="services.html">kbox.services</a>
+            </li>
+            
+            <li>
+              <a href="update.html">kbox.update</a>
+            </li>
+            
+            <li>
+              <a href="firewall.html">kbox.util.firewall</a>
+            </li>
+            
+            <li>
+              <a href="internet.html">kbox.util.internet</a>
+            </li>
+            
+            <li>
+              <a href="npm.html">kbox.util.npm</a>
+            </li>
+            
+            <li>
+              <a href="shell.html">kbox.util.shell</a>
+            </li>
+            
+            <li>
+              <a href="module-kbox.html">kbox</a>
             </li>
             
 
@@ -144,24 +180,633 @@
     
 
     
-        <h3 class="subsection-title">Members</h3>
+
+    
+        <h3 class="subsection-title">Methods</h3>
 
         <dl>
             
-<dt class="name" id="list">
-    <h4><span class="type-signature">&lt;inner> </span>list<span class="type-signature"></span></h4>
-
+<dt>
+    <h4 class="name" id="create"><span class="type-signature">&lt;static> </span>create<span class="signature">(name, config, callback)</span><span class="type-signature"></span></h4>
+    
     
 </dt>
 <dd>
     
+    
     <div class="description">
-        Lists all the users apps known to Kalabox.
+        Creates an app.
     </div>
     
 
     
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>name</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">string</span>
 
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">The name of the app.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>config</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">object</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">An app config object.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Callback function called when the app is created
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>error</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">error</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">An error if any.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>app</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">object</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">The instantiated app object.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  <h5 class="subsection-title">Properties:</h5>
+
+  <dl>
+
+<table class="props table table-striped">
+    <thead>
+  <tr>
+    
+    <th>Name</th>
+    
+
+    <th>Type</th>
+
+    
+
+    
+
+    <th class="last">Description</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">String name of the application.</td>
+        </tr>
+
+  
+
+        <tr>
+            
+                <td class="name"><code>domain</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The domain name. -> appName.kbox</td>
+        </tr>
+
+  
+
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">URL of the app.</td>
+        </tr>
+
+  
+
+        <tr>
+            
+                <td class="name"><code>dataContainerName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Name of the data component for the app.</td>
+        </tr>
+
+  
+
+        <tr>
+            
+                <td class="name"><code>appRoot</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Root directory for the app.</td>
+        </tr>
+
+  
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The app's config object.</td>
+        </tr>
+
+  
+
+        <tr>
+            
+                <td class="name"><code>plugins</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object.&lt;array></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">List of the app's plugins.</td>
+        </tr>
+
+  
+
+        <tr>
+            
+                <td class="name"><code>components</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object.&lt;array></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">List of the app's components.</td>
+        </tr>
+
+  
+  </tbody>
+</table>
+</dl>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">kbox.app.create(config.appName, config, function(err, app) {
+ callback(err, app);
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="get"><span class="type-signature">&lt;static> </span>get<span class="signature">(appName, callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Get an app object from an app's name.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>appName</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">string</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">App name for the app you want to get.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Callback function called when the app is got.
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>error</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">error</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Error from getting the app.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>app</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">app</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">App object.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
     
 <dl class="details">
   
@@ -193,17 +838,25 @@
   
 </dl>
 
+    
+    
 
+    
+
+    
+    
+    
+    
+    
+    
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">kbox.app.list(function(err, apps) {
+    <pre class="sunlight-highlight-javascript">kbox.app.get(&#x27;myapp&#x27;, function(err, app) {
   if (err) {
     throw err;
   } else {
-    apps.forEach(function(app) {
-      console.log(app.name);
-    });
+    console.log(app.config);
   }
 });</pre>
 
@@ -211,13 +864,7 @@
     
 </dd>
 
-        </dl>
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
+        
             
 <dt>
     <h4 class="name" id="install"><span class="type-signature">&lt;static> </span>install<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
@@ -411,6 +1058,413 @@
     throw errs;
   } else {
     console.log(&#x27;App installed.&#x27;);
+  }
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="list"><span class="type-signature">&lt;static> </span>list<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Lists all the users apps known to Kalabox.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Callback called when query for apps is complete.
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>error</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">error</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last"></td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>apps</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">app.&lt;array></span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Array of apps.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">kbox.app.list(function(err, apps) {
+  if (err) {
+    throw err;
+  } else {
+    apps.forEach(function(app) {
+      console.log(app.name);
+    });
+  }
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="rebuild"><span class="type-signature">&lt;static> </span>rebuild<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Rebuilds an apps containers. This will stop an app's containers, remove all
+of them except the data container, pull down the latest versions of the
+containers as specified in the app's kalabox.json. You will need to run
+`kbox start` when done to restart your app.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>app</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">object</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">App object you want to rebuild.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Callback called when the app has been rebuilt.
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>errors</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">array</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Error from rebuilding components.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">kbox.app.rebuild(app, function(errs) {
+  if (err) {
+    throw err;
+  } else {
+    console.log(&#x27;App rebuilt!.&#x27;);
   }
 });</pre>
 
@@ -622,432 +1676,7 @@
         
             
 <dt>
-    <h4 class="name" id="uninstall"><span class="type-signature">&lt;static> </span>uninstall<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Uninstalls an app's components.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>app</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">App object you want to uninstall.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback called when the app has been uninstalled.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>errors</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">array</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Array of errors from uninstalling components.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">kbox.app.uninstall(app, function(errs) {
-  if (errs) {
-    throw errs;
-  } else {
-    console.log(&#x27;App uninstalled.&#x27;);
-  }
-});</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="get"><span class="type-signature">&lt;inner> </span>get<span class="signature">(appName, callback)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Get an app object from an app's name.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>appName</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">string</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">App name for the app you want to get.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback function called when the app is got.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>error</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">error</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Error from getting the app.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>app</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type"><a href="global.html#app">app</a></span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">App object.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">kbox.app.get(&#x27;myapp&#x27;, function(err, app) {
-  if (err) {
-    throw err;
-  } else {
-    console.log(app.config);
-  }
-});</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="start"><span class="type-signature">&lt;inner> </span>start<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="start"><span class="type-signature">&lt;static> </span>start<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1248,7 +1877,7 @@
         
             
 <dt>
-    <h4 class="name" id="stop"><span class="type-signature">&lt;inner> </span>stop<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="stop"><span class="type-signature">&lt;static> </span>stop<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1446,6 +2075,207 @@
     
 </dd>
 
+        
+            
+<dt>
+    <h4 class="name" id="uninstall"><span class="type-signature">&lt;static> </span>uninstall<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Uninstalls an app's components except for the data container.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>app</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">object</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">App object you want to uninstall.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Callback called when the app has been uninstalled.
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>errors</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">array</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Array of errors from uninstalling components.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">kbox.app.uninstall(app, function(err) {
+  if (err) {
+    throw err;
+  } else {
+    console.log(&#x27;App uninstalled.&#x27;);
+  }
+});</pre>
+
+
+    
+</dd>
+
         </dl>
     
 
@@ -1472,7 +2302,7 @@
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.2.2</a>
-    on 2015-04-24T20:32:36+00:00
+    on 2015-05-09T00:48:40+00:00
     </span>
         </footer>
       </div>

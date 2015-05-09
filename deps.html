@@ -36,7 +36,11 @@
             </li>
             
             <li>
-              <a href="plugin.html">kbox.core.plugin</a>
+              <a href="events.html">kbox.core.events</a>
+            </li>
+            
+            <li>
+              <a href="tasks.html">kbox.core.tasks</a>
             </li>
             
             <li>
@@ -48,11 +52,43 @@
             </li>
             
             <li>
+              <a href="create.html">kbox.create</a>
+            </li>
+            
+            <li>
               <a href="engine.html">kbox.engine</a>
             </li>
             
             <li>
+              <a href="install.html">kbox.install</a>
+            </li>
+            
+            <li>
               <a href="services.html">kbox.services</a>
+            </li>
+            
+            <li>
+              <a href="update.html">kbox.update</a>
+            </li>
+            
+            <li>
+              <a href="firewall.html">kbox.util.firewall</a>
+            </li>
+            
+            <li>
+              <a href="internet.html">kbox.util.internet</a>
+            </li>
+            
+            <li>
+              <a href="npm.html">kbox.util.npm</a>
+            </li>
+            
+            <li>
+              <a href="shell.html">kbox.util.shell</a>
+            </li>
+            
+            <li>
+              <a href="module-kbox.html">kbox</a>
             </li>
             
 
@@ -143,128 +179,6 @@
 
     
 
-    
-        <h3 class="subsection-title">Members</h3>
-
-        <dl>
-            
-<dt class="name" id="contains">
-    <h4><span class="type-signature">&lt;inner> </span>contains<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Searches to find if a dependency exists.
-    </div>
-    
-
-    
-
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">var deps = require(...);
-if (!deps.contains(&#x27;docker&#x27;)) {
-  deps.register(&#x27;docker&#x27;, new Docker(config));
-}</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt class="name" id="register">
-    <h4><span class="type-signature">&lt;inner> </span>register<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Registers dependency for later access by other modules.
-    </div>
-    
-
-    
-
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">var deps = require(...);
-deps.register(&#x27;app&#x27;, new App(config));</pre>
-
-
-    
-</dd>
-
-        </dl>
     
 
     
@@ -386,11 +300,9 @@ deps.register(&#x27;app&#x27;, new App(config));</pre>
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">var deps = require(...);
-deps.call(function(app, flagVerbose) {
-  if (flagVerbose) {
-    console.log(app.name);
-  }
+    <pre class="sunlight-highlight-javascript">kbox.core.deps.call(function(app, globalConfig, deathStarPlan, javaTheHut) {
+  console.log(app.name);
+  .......
 });</pre>
 
 
@@ -463,11 +375,147 @@ deps.call(function(app, flagVerbose) {
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">var deps = require(...);
+    <pre class="sunlight-highlight-javascript">var deps = kbox.core.deps;
 deps.register(&#x27;foo&#x27;, &#x27;bar&#x27;);
 assert(deps.contains(&#x27;foo&#x27;));
 deps.clear();
 assert(!deps.contains(&#x27;foo&#x27;));</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="contains"><span class="type-signature">&lt;static> </span>contains<span class="signature">(name)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Searches to find if a dependency exists.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>name</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">string</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Name of dependency.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    - True if dependency exists otherwise false.
+</div>
+
+
+
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">var deps = kbox.core.deps;
+if (!deps.contains(&#x27;lunch&#x27;)) {
+  deps.register(&#x27;lunch&#x27;, new MeatballSandwich({extraSauce: true}));
+}</pre>
 
 
     
@@ -632,7 +680,7 @@ assert(!deps.contains(&#x27;foo&#x27;));</pre>
     
             
 <div class="param-desc">
-    - Value of dependency or undefined if dependency does not exist.
+    - Value of dependency or null if dependency does not exist.
 </div>
 
 
@@ -643,15 +691,13 @@ assert(!deps.contains(&#x27;foo&#x27;));</pre>
     
         <h5>Examples</h5>
         
-    <pre class="sunlight-highlight-javascript">var deps = require(...);
-var result = deps.lookup(&#x27;mydepname&#x27;, {optional:true});
+    <pre class="sunlight-highlight-javascript">var result = kbox.core.deps.lookup(&#x27;mydepname&#x27;, {optional:true});
 if (result) {
   console.log(result);
 }</pre>
 
-    <pre class="sunlight-highlight-javascript">var deps = require(...);
-try {
-  var result = deps.lookup(&#x27;mydepname&#x27;);
+    <pre class="sunlight-highlight-javascript">try {
+  var result = kbox.core.deps.lookup(&#x27;mydepname&#x27;);
 } catch (err) {
   console.log(&#x27;Dependency does not exist!&#x27;);
 }</pre>
@@ -799,11 +845,291 @@ try {
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">var deps = require(&#x27;...&#x27;);
+    <pre class="sunlight-highlight-javascript">var deps = kbox.core.deps;
 assert(deps.lookup(&#x27;mode&#x27;) === &#x27;prod&#x27;);
 deps.override({mode:test}, function(done) {
   assert(deps.lookup(&#x27;mode&#x27;) === &#x27;test&#x27;);
 });</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="register"><span class="type-signature">&lt;static> </span>register<span class="signature">(name, dependency)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Registers dependency for later access by other modules.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>name</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">string</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Name of dependency.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>dependency</code></td>
+              
+  
+              <td class="type">
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Dependency to register.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">kbox.core.deps.register(&#x27;dinner&#x27;, new Steak({style: mediumWell}));</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="registerIf"><span class="type-signature">&lt;static> </span>registerIf<span class="signature">(name, dependency)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Registers a dependency if it is not already registered.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>name</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">string</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Name of dependency.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>dependency</code></td>
+              
+  
+              <td class="type">
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Dependency to register.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">kbox.core.deps.registerIf(&#x27;shieldGeneratorLocation&#x27;, location);</pre>
 
 
     
@@ -925,7 +1251,7 @@ deps.override({mode:test}, function(done) {
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">var deps = require(...);
+    <pre class="sunlight-highlight-javascript">var deps = kbox.core.deps;
 deps.register(&#x27;key&#x27;, &#x27;value&#x27;);
 deps.remove(&#x27;key&#x27;);</pre>
 
@@ -959,7 +1285,7 @@ deps.remove(&#x27;key&#x27;);</pre>
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.2.2</a>
-    on 2015-04-24T20:32:36+00:00
+    on 2015-05-09T00:48:40+00:00
     </span>
         </footer>
       </div>

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes, width=device-width">
-  <title>Kalabox API — Global</title>
+  <title>Kalabox API — Module: kbox</title>
   <link rel="shortcut icon" href="/favicon.ico">
 
   <!--[if lt IE 9]>
@@ -36,7 +36,11 @@
             </li>
             
             <li>
-              <a href="plugin.html">kbox.core.plugin</a>
+              <a href="events.html">kbox.core.events</a>
+            </li>
+            
+            <li>
+              <a href="tasks.html">kbox.core.tasks</a>
             </li>
             
             <li>
@@ -48,11 +52,43 @@
             </li>
             
             <li>
+              <a href="create.html">kbox.create</a>
+            </li>
+            
+            <li>
               <a href="engine.html">kbox.engine</a>
             </li>
             
             <li>
+              <a href="install.html">kbox.install</a>
+            </li>
+            
+            <li>
               <a href="services.html">kbox.services</a>
+            </li>
+            
+            <li>
+              <a href="update.html">kbox.update</a>
+            </li>
+            
+            <li>
+              <a href="firewall.html">kbox.util.firewall</a>
+            </li>
+            
+            <li>
+              <a href="internet.html">kbox.util.internet</a>
+            </li>
+            
+            <li>
+              <a href="npm.html">kbox.util.npm</a>
+            </li>
+            
+            <li>
+              <a href="shell.html">kbox.util.shell</a>
+            </li>
+            
+            <li>
+              <a href="module-kbox.html">kbox</a>
             </li>
             
 
@@ -78,12 +114,12 @@
           
 
 
-	<h1 class="page-title">Global</h1>
+	<h1 class="page-title">Module: kbox</h1>
 <section>
 
 <header>
     <h2>
-    
+    kbox
     </h2>
     
 </header>
@@ -93,6 +129,8 @@
     
 
     
+        
+            <div class="description">Root namespace for kalabox framework.</div>
         
 
         
@@ -144,249 +182,157 @@
     
 
     
-
-    
-        <h3 class="subsection-title">Type Definitions</h3>
+        <h3 class="subsection-title">Methods</h3>
 
         <dl>
-                
-<dt class="name" id="app">
-    <h4>app</h4>
-
+            
+<dt>
+    <h4 class="name" id="whenApp"><span class="type-signature">&lt;static> </span>whenApp<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    
     
 </dt>
 <dd>
     
+    
+    <div class="description">
+        Register a callback that only gets called when an app is loaded.
+    </div>
+    
 
     
-        <h5>Type:</h5>
-        <ul>
-            <li>
-                
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Function that is called when an app is loaded.
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>app</code></td>
+              
+  
+              <td class="type">
+              
+                  
 <span class="param-type">object</span>
 
 
-            </li>
-        </ul>
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">App object for the app that was loaded.</td>
+          </tr>
+  
     
+  
+          <tr>
+              
+                  <td class="name"><code>done</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
 
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">[optional] - Optional callback function for performing
+  an asynchronous operation and then returning control back to kalabox.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
     
 <dl class="details">
   
 
-  <h5 class="subsection-title">Properties:</h5>
-
-  <dl>
-
-<table class="props table table-striped">
-    <thead>
-  <tr>
-    
-    <th>Name</th>
-    
-
-    <th>Type</th>
-
-    
-
-    
-
-    <th class="last">Description</th>
-  </tr>
-  </thead>
-
-  <tbody>
-  
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">String name of the application.</td>
-        </tr>
-
-  
-
-        <tr>
-            
-                <td class="name"><code>domain</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The domain name. -> appName.kbox</td>
-        </tr>
-
-  
-
-        <tr>
-            
-                <td class="name"><code>url</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">URL of the app.</td>
-        </tr>
-
-  
-
-        <tr>
-            
-                <td class="name"><code>dataContainerName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Name of the data component for the app.</td>
-        </tr>
-
-  
-
-        <tr>
-            
-                <td class="name"><code>appRoot</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Root directory for the app.</td>
-        </tr>
-
-  
-
-        <tr>
-            
-                <td class="name"><code>config</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The app's config object.</td>
-        </tr>
-
-  
-
-        <tr>
-            
-                <td class="name"><code>plugins</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object.&lt;array></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">List of the app's plugins.</td>
-        </tr>
-
-  
-
-        <tr>
-            
-                <td class="name"><code>components</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object.&lt;array></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">List of the app's components.</td>
-        </tr>
-
-  
-  </tbody>
-</table>
-</dl>
-
-  
-
   
 
   
@@ -413,12 +359,41 @@
 
   
 </dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">&#x2F;&#x2F; Not all kalabox commands will be run with an app loaded. If you need
+&#x2F;&#x2F; something to happen only when an app is loaded, kbox.whenApp is for you.
+
+kbox.whenApp(function(app, done) {
+  myPlugin.doSomething(app, function(err, result) {
+    if (err) {
+      return done(err);
+    }
+    console.log(result);
+    done();
+  });
+});</pre>
 
 
     
 </dd>
 
-            </dl>
+        </dl>
+    
+
     
 
     
@@ -442,7 +417,7 @@
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.2.2</a>
-    on 2015-04-24T20:32:36+00:00
+    on 2015-05-09T00:48:41+00:00
     </span>
         </footer>
       </div>

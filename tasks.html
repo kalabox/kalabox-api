@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes, width=device-width">
-  <title>Kalabox API — Modules</title>
+  <title>Kalabox API — Module: tasks</title>
   <link rel="shortcut icon" href="/favicon.ico">
 
   <!--[if lt IE 9]>
@@ -114,12 +114,12 @@
           
 
 
-	<h1 class="page-title">Modules</h1>
+	<h1 class="page-title">Module: tasks</h1>
 <section>
 
 <header>
     <h2>
-    
+    tasks
     </h2>
     
 </header>
@@ -129,6 +129,8 @@
     
 
     
+        
+            <div class="description">Module for adding command line tasks to the kalabox command line interface.</div>
         
 
         
@@ -179,6 +181,248 @@
 
     
 
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
+<dt>
+    <h4 class="name" id="registerTask"><span class="type-signature">&lt;static> </span>registerTask<span class="signature">(handler)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Add new task to the task tree.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>handler</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Function used to build a new task.
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>task</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">object</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Uninitialized task object.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>done</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">[optional] - Callback function to return async
+  control back to kalabox.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">kbox.core.tasks.registerTask(function(task, done) {
+
+  &#x2F;&#x2F; Set path of task so cli command will be &#x27;kbox util foo bar&#x27;.
+  task.path = [&#x27;util&#x27;, &#x27;foo&#x27;, &#x27;bar&#x27;];
+
+  &#x2F;&#x2F; Set a description for the cli command.
+  task.description = &#x27;Bar the foo and output the results.&#x27;;
+
+  &#x2F;&#x2F; Allow any number of cli arguments.
+  &#x2F;&#x2F; &#x27;argv*&#x27; - allow any number of cli agruments.
+  &#x2F;&#x2F; &#x27;argv3&#x27; - allow 3 and only 3 cli arguments.
+  &#x2F;&#x2F; &#x27;argv0&#x27; - do not allow any cli arguments.
+  task.kind = &#x27;argv*&#x27;;
+
+  &#x2F;&#x2F; Add a cli option for force. &#x27;kbox util foo bar -- -f&#x27;
+  task.options.push({
+    name: &#x27;force&#x27;,
+    alias: &#x27;f&#x27;,
+    description: &#x27;Force the bar to foo even if it does not want to&#x27;;
+  });
+
+  &#x2F;&#x2F; Function to execute as the command.
+  task.func = function(done) {
+
+    &#x2F;&#x2F; Get cli option value for force.
+    var force = this.options.force;
+
+    &#x2F;&#x2F; Get cli arguments.
+    var args = this.payload;
+
+    bar.foo(args, force, function(err, result) {
+      if (err) {
+        return done(err);
+      }
+      console.log(result);
+      done();
+    });
+
+  };
+
+  &#x2F;&#x2F; Return control back to kalabox.
+  done();
+});</pre>
+
+
+    
+</dd>
+
+        </dl>
     
 
     

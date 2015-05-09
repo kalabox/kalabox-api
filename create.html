@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes, width=device-width">
-  <title>Kalabox API — Module: config</title>
+  <title>Kalabox API — Module: create</title>
   <link rel="shortcut icon" href="/favicon.ico">
 
   <!--[if lt IE 9]>
@@ -114,12 +114,12 @@
           
 
 
-	<h1 class="page-title">Module: config</h1>
+	<h1 class="page-title">Module: create</h1>
 <section>
 
 <header>
     <h2>
-    config
+    create
     </h2>
     
 </header>
@@ -130,7 +130,7 @@
 
     
         
-            <div class="description">Module for global and app configs.</div>
+            <div class="description">Module for registering apps that can be createed</div>
         
 
         
@@ -187,7 +187,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="getAppConfig"><span class="type-signature">&lt;static> </span>getAppConfig<span class="signature">(app, appRoot)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="add"><span class="type-signature">&lt;inner> </span>add<span class="signature">(appName, data)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -195,10 +195,8 @@
     
     
     <div class="description">
-        Gets the app config for an app. The app config is a combination of the
-  environment config, the default config, any values overriden in the
-  $HOME/.kalabox/kalabox.json config file, and the kalabox.json config
-  file in the app's root directory.
+        Adds a type of app that you can create and options, interactive inquires
+and other fun stuff too that app.
     </div>
     
 
@@ -232,7 +230,7 @@
   
           <tr>
               
-                  <td class="name"><code>app</code></td>
+                  <td class="name"><code>appName</code></td>
               
   
               <td class="type">
@@ -248,20 +246,20 @@
   
               
   
-              <td class="description last">The name of the app you'd like to get the config for.</td>
+              <td class="description last">What app to attach the data to.</td>
           </tr>
   
     
   
           <tr>
               
-                  <td class="name"><code>appRoot</code></td>
+                  <td class="name"><code>data</code></td>
               
   
               <td class="type">
               
                   
-<span class="param-type">string</span>
+<span class="param-type">object</span>
 
 
               
@@ -271,8 +269,7 @@
   
               
   
-              <td class="description last">[optional] - Directory to load the
-app's config file from.</td>
+              <td class="description last">A task or option to add to the app.</td>
           </tr>
   
     
@@ -323,135 +320,63 @@ app's config file from.</td>
     
     
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    config - The app's kalabox app config.
-</div>
-
-
-
-<dl>
-  <dt>
-    Type
-  </dt>
-  <dd>
-    
-<span class="param-type">object</span>
-
-
-  </dd>
-</dl>
-
-
-        
     
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">var appConfig = kbox.core.config.getAppConfig(&#x27;myapp&#x27;);
-&#x2F;&#x2F; Print the entire app config.
-console.log(JSON.stringify(appConfig, null, &#x27;\t&#x27;));</pre>
+    <pre class="sunlight-highlight-javascript">&#x2F;&#x2F; This will create a command called `kbox create drupal`.
+kbox.create.add(&#x27;drupal&#x27;, {
+  task: {
+    name: &#x27;Drupal&#x27;,
+    module: &#x27;kalabox-app-drupal&#x27;,
+    description: &#x27;Creates a Drupal app.&#x27;
+  }
+});
 
+&#x2F;&#x2F; This will add a command line option called `name` to `kbox create drupal`.
+&#x2F;&#x2F; It will also add interactive step asking for the name to be inputted if
+&#x2F;&#x2F; it is not passed in to the CLI. The result of this will end up at the
+&#x2F;&#x2F; top level of the app&#x27;s kalabox.json in the appName key.
+kbox.create.add(&#x27;drupal&#x27;, {
+  option: {
+    name: &#x27;name&#x27;,
+    weight: -99,
+    task: {
+      kind: &#x27;string&#x27;,
+      description: &#x27;The name of your app.&#x27;,
+    },
+    inquire: {
+      type: &#x27;input&#x27;,
+      message: &#x27;What will this app be called&#x27;,
+      validate: function(value) {
+        &#x2F;&#x2F; @todo some actual validation here
+        return true;
+      },
+      filter: function(value) {
+        return _.kebabCase(value);
+      },
+      default: &#x27;My Drupal App&#x27;
+    },
+    conf: {
+      type: &#x27;global&#x27;,
+      key: &#x27;appName&#x27;
+    }
+  }
+});
 
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getDefaultConfig"><span class="type-signature">&lt;static> </span>getDefaultConfig<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the default config. The default config is a combination of the
-  environment config and a set of default config values.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    config - The kalabox default config.
-</div>
-
-
-
-<dl>
-  <dt>
-    Type
-  </dt>
-  <dd>
-    
-<span class="param-type">object</span>
-
-
-  </dd>
-</dl>
-
-
-        
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">var defaultConfig = kbox.core.config.getDefaultConfig();
-&#x2F;&#x2F; Print global plugins
-defaultConfig.globalPlugins.forEach(function(plugin) {
-  console.log(plugin)  ;
+&#x2F;&#x2F; This add&#x27;s an interactive step to `kbox drupal create` asking the
+&#x2F;&#x2F; user to select a drupal version.
+kbox.create.add(&#x27;drupal&#x27;, {
+  option: {
+    name: &#x27;drupal-version&#x27;,
+    weight: -98,
+    inquire: {
+      type: &#x27;list&#x27;,
+      message: &#x27;What major version of drupal&#x27;,
+      default: &#x27;7&#x27;,
+      choices: Object.keys(drupalMatrix)
+    }
+  }
 });</pre>
 
 
@@ -461,7 +386,7 @@ defaultConfig.globalPlugins.forEach(function(plugin) {
         
             
 <dt>
-    <h4 class="name" id="getEnvConfig"><span class="type-signature">&lt;static> </span>getEnvConfig<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+    <h4 class="name" id="buildTask"><span class="type-signature">&lt;inner> </span>buildTask<span class="signature">(task, appName)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -469,7 +394,8 @@ defaultConfig.globalPlugins.forEach(function(plugin) {
     
     
     <div class="description">
-        Gets the kalabox environment config.
+        Assembles create.add metadata and builds a task to create a certain kind
+of app.
     </div>
     
 
@@ -477,6 +403,79 @@ defaultConfig.globalPlugins.forEach(function(plugin) {
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>task</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">object</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">A kbox task object.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>appName</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">string</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">The name of the kind of app to be created.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
     
     
     
@@ -520,135 +519,14 @@ defaultConfig.globalPlugins.forEach(function(plugin) {
     
     
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    config - The kalabox enviroment config.
-</div>
-
-
-
-<dl>
-  <dt>
-    Type
-  </dt>
-  <dd>
-    
-<span class="param-type">object</span>
-
-
-  </dd>
-</dl>
-
-
-        
     
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">var envConfig = kbox.core.config.getEnvConfig();
-&#x2F;&#x2F; Print home directory to stdout.
-console.log(envConfig.home);</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="getGlobalConfig"><span class="type-signature">&lt;static> </span>getGlobalConfig<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Gets the global config. The global config is a combination of the
-  environment config, the default config, and any values overriden
-  in the $HOME/.kalabox/kalabox.json config file.
-    </div>
-    
-
-    
-    
-    
-    
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    config - The kalabox global config.
-</div>
-
-
-
-<dl>
-  <dt>
-    Type
-  </dt>
-  <dd>
-    
-<span class="param-type">object</span>
-
-
-  </dd>
-</dl>
-
-
-        
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">var globalConfig = kbox.core.config.getGlobalConfig();
-&#x2F;&#x2F; Print the entire global config.
-console.log(JSON.stringify(globalConfig, null, &#x27;\t&#x27;));</pre>
+    <pre class="sunlight-highlight-javascript">&#x2F;&#x2F; Task to create kalabox apps
+kbox.tasks.add(function(task) {
+ kbox.create.buildTask(task, &#x27;frontpage98&#x27;);
+});</pre>
 
 
     
