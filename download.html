@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes, width=device-width">
-  <title>Kalabox API — Module: update</title>
+  <title>Kalabox API — Module: download</title>
   <link rel="shortcut icon" href="/favicon.ico">
 
   <!--[if lt IE 9]>
@@ -68,7 +68,11 @@
             </li>
             
             <li>
-              <a href="update.html">kbox.update</a>
+              <a href="disk.html">kbox.util.disk</a>
+            </li>
+            
+            <li>
+              <a href="download.html">kbox.util.download</a>
             </li>
             
             <li>
@@ -77,10 +81,6 @@
             
             <li>
               <a href="internet.html">kbox.util.internet</a>
-            </li>
-            
-            <li>
-              <a href="npm.html">kbox.util.npm</a>
             </li>
             
             <li>
@@ -114,12 +114,12 @@
           
 
 
-	<h1 class="page-title">Module: update</h1>
+	<h1 class="page-title">Module: download</h1>
 <section>
 
 <header>
     <h2>
-    update
+    download
     </h2>
     
 </header>
@@ -130,7 +130,7 @@
 
     
         
-            <div class="description">Module for accessing the kalabox update framework.</div>
+            <div class="description">Kalabox download utility module.</div>
         
 
         
@@ -187,7 +187,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="registerStep"><span class="type-signature">&lt;static> </span>registerStep<span class="signature">(handler)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="downloadFiles"><span class="type-signature">&lt;static> </span>downloadFiles<span class="signature">(urls, dest)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -195,7 +195,7 @@
     
     
     <div class="description">
-        Register an update step with the kalabox update framework.
+        Downloads a bunch of files and extracts those as appropriate
     </div>
     
 
@@ -229,13 +229,13 @@
   
           <tr>
               
-                  <td class="name"><code>handler</code></td>
+                  <td class="name"><code>urls</code></td>
               
   
               <td class="type">
               
                   
-<span class="param-type">function</span>
+<span class="param-type">array</span>
 
 
               
@@ -245,62 +245,20 @@
   
               
   
-              <td class="description last">Function used to build a new update step.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>step</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Unitialized step object.</td>
+              <td class="description last">Array of URLs to download.</td>
           </tr>
   
     
   
           <tr>
               
-                  <td class="name"><code>done</code></td>
+                  <td class="name"><code>dest</code></td>
               
   
               <td class="type">
               
                   
-<span class="param-type">function</span>
+<span class="param-type">error</span>
 
 
               
@@ -310,16 +268,30 @@
   
               
   
-              <td class="description last">[optional] - Callback function to return async
-  control back to kalabox.</td>
+              <td class="description last">Where we want the downloads to end up</td>
           </tr>
   
     
-    </tbody>
-  </table>
-</div>
+  
+          <tr>
+              
+                  <td class="name"><code>callback.files</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">vinyl</span>
 
+
+              
               </td>
+  
+              
+  
+              
+  
+              <td class="description last">Array of vinyl objects</td>
           </tr>
   
     
@@ -374,54 +346,9 @@
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">kbox.update.registerStep(function(step) {
-  step.name = &#x27;update-my-custom-plugin&#x27;;
-  step.description = &#x27;Update my custom plugin that kicks butt!&#x27;;
+    <pre class="sunlight-highlight-javascript">kbox.util.download.downloadFiles()
 
-  &#x2F;&#x2F; List of the names of other steps this step requires to be run first.
-  step.deps = [&#x27;internet&#x27;];
-
-  &#x2F;&#x2F; List of the names of other steps that should be run after
-  &#x2F;&#x2F;   this one.
-  step.subscribes = [&#x27;use-my-custom-plugin&#x27;];
-
-  &#x2F;&#x2F; You can define one function for all operating systems.
-  step.all = function(state, done) {
-    state.log(&#x27;starting to update my custom plugin.&#x27;);
-    myCustomPlug.update(function(err) {
-      if (err) {
-        return done(err);
-      }
-      state.log(&#x27;done updating my custom plugin.&#x27;);
-      done();
-    });
-  };
-
-  &#x2F;&#x2F; Or you can define different functions for different operation systems.
-
-  &#x2F;&#x2F; Run this update function only for darwin (Mac OS X).
-  step.all.darwin = function(state, done) {
-    &#x2F;&#x2F; Do darwin specific stuffs.
-    done();
-  };
-
-  &#x2F;&#x2F; Run this update function only for fedora.
-  step.all.linux.fedora = function(state, done) {
-    &#x2F;&#x2F; Do fedora specific stuffs.
-    done();
-  };
-
-  &#x2F;&#x2F; Here are all possible choices.
-  step.all: {
-    darwin: function
-    linux: {
-      debain: function,
-      fedora: function,
-      other: function
-    },
-    win32: function
-  };
-
+.then(function(files) {
 });</pre>
 
 
@@ -454,7 +381,7 @@
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.2.2</a>
-    on 2015-08-28T23:17:58+00:00
+    on 2015-09-20T03:36:09+00:00
     </span>
         </footer>
       </div>
