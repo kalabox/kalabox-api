@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes, width=device-width">
-  <title>Kalabox API — Module: services</title>
+  <title>Kalabox API — Module: domain</title>
   <link rel="shortcut icon" href="/favicon.ico">
 
   <!--[if lt IE 9]>
@@ -118,12 +118,12 @@
           
 
 
-	<h1 class="page-title">Module: services</h1>
+	<h1 class="page-title">Module: domain</h1>
 <section>
 
 <header>
     <h2>
-    services
+    domain
     </h2>
     
 </header>
@@ -134,19 +134,7 @@
 
     
         
-            <div class="description">Kalabox allows the spin up of additional containers that may be needed to
-support apps running correctly. By default Kalabox ships with a default
-set of services, called "kalabox" to allow for better intra-container
-communication and reverse proxying.
-
-Kalabox uses the following interface which the default set of services
-implements. You can easily define your own set of services using the default
-ones as an example. To do so you will want to edit your global config file
-to change the services key with your own and then add a folder and modules
-into the services folder using the name set in the global config. For example
-if you are using 'kalabox' as your set of services then you would expect to
-see a folder named 'kalabox' in the services folder and a module named
-kalabox.js</div>
+            <div class="description">Kalabox domain utility module.</div>
         
 
         
@@ -195,83 +183,6 @@ kalabox.js</div>
 
     
 
-    
-        <h3 class="subsection-title">Members</h3>
-
-        <dl>
-            
-<dt class="name" id="servicesInstance">
-    <h4><span class="type-signature">&lt;inner> </span>servicesInstance<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Loads the corrects services module based on the value of the 'services' key
-in the global config.
-    </div>
-    
-
-    
-
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">var DEFAULT_GLOBAL_CONFIG = {
-  domain: &#x27;kbox&#x27;,
-  engine: &#x27;docker&#x27;,
-  services: &#x27;MYSERVICE&#x27;,
-  kboxRoot: &#x27;:home:&#x2F;kalabox&#x27;,
-  kalaboxRoot: &#x27;:kboxRoot:&#x27;,
-  appsRoot: &#x27;:kboxRoot:&#x2F;apps&#x27;,
-  globalPluginRoot: &#x27;:kboxRoot:&#x2F;plugins&#x27;,
-  globalPlugins: [
-    &#x27;hipache&#x27;,
-    &#x27;kalabox_core&#x27;,
-    &#x27;kalabox_install&#x27;,
-    &#x27;kalabox_app&#x27;,
-    &#x27;kalabox_provider&#x27;
-  ]
-};</pre>
-
-
-    
-</dd>
-
-        </dl>
     
 
     
@@ -280,7 +191,7 @@ in the global config.
         <dl>
             
 <dt>
-    <h4 class="name" id="install"><span class="type-signature">&lt;static> </span>install<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="modKebabCase"><span class="type-signature">&lt;static> </span>modKebabCase<span class="signature">(string)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -288,7 +199,11 @@ in the global config.
     
     
     <div class="description">
-        Installs and creates all the containers needed for the services
+        Parses a string into a modified kebab case. In this instance
+modified kebab case means
+  1. Only alphanumeric and hyphens
+  2. No trailing or leading hyphens
+  3. Lowercase
     </div>
     
 
@@ -322,13 +237,13 @@ in the global config.
   
           <tr>
               
-                  <td class="name"><code>callback</code></td>
+                  <td class="name"><code>string</code></td>
               
   
               <td class="type">
               
                   
-<span class="param-type">function</span>
+<span class="param-type">string</span>
 
 
               
@@ -338,57 +253,7 @@ in the global config.
   
               
   
-              <td class="description last">Callback called when the services have been installed and created.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>errors</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">array</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Array of errors from installing of services.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
+              <td class="description last">The string to tranform</td>
           </tr>
   
     
@@ -443,11 +308,7 @@ in the global config.
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">services.install(function() {
-  log.info(&#x27;Core services installed.&#x27;);
-    next(null);
-  });
-}</pre>
+    <pre class="sunlight-highlight-javascript">var domainName = kbox.util.domain.modKebabCase(&#x27;Drupal 8&#x27;);</pre>
 
 
     
@@ -456,7 +317,7 @@ in the global config.
         
             
 <dt>
-    <h4 class="name" id="rebuild"><span class="type-signature">&lt;static> </span>rebuild<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="validateDomain"><span class="type-signature">&lt;static> </span>validateDomain<span class="signature">(domain)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -464,7 +325,11 @@ in the global config.
     
     
     <div class="description">
-        Destroys all the startable services and recreates them
+        Validates that a string is a valid FQDN. This means
+  1. Only alphanumeric and hyphens
+  2. No trailing or leading hyphens
+  3. Lowercase
+  4. Correct .* syntax
     </div>
     
 
@@ -498,13 +363,13 @@ in the global config.
   
           <tr>
               
-                  <td class="name"><code>callback</code></td>
+                  <td class="name"><code>domain</code></td>
               
   
               <td class="type">
               
                   
-<span class="param-type">function</span>
+<span class="param-type">string</span>
 
 
               
@@ -514,57 +379,7 @@ in the global config.
   
               
   
-              <td class="description last">Callback called when the services have been installed and created.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>errors</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">array</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Array of errors from installing of services.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
+              <td class="description last">The domain to check</td>
           </tr>
   
     
@@ -619,191 +434,9 @@ in the global config.
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">services.rebuild(function() {
-  log.info(&#x27;Core services rebuilt!.&#x27;);
-    next(null);
-  });
-}</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="verify"><span class="type-signature">&lt;static> </span>verify<span class="signature">(callback)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Makes sure that the services module has all their containers up and running
-before an app is started or stopped.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback called when the services have been started.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>error</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">error</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last"></td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">services.verify(function(err) {
-  if (err) {
-    callback(err);
-  }
-  else {
-    someFunctionThatDoesAppThingsThatRequireServicesToBeStarted();
-  }
-});</pre>
+    <pre class="sunlight-highlight-javascript">if (kbox.util.domain.validateDomain(&#x27;victory.kbox&#x27;)) {
+  console.log(&#x27;Valid Domain! Woohoo!&#x27;);
+};</pre>
 
 
     
