@@ -191,6 +191,187 @@
         <dl>
             
 <dt>
+    <h4 class="name" id="cleanup"><span class="type-signature">&lt;static> </span>cleanup<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Attempts to clean up corrupted apps. This will compare the appRegistry
+with kbox.list to determine apps that may have orphaned containers. If
+those apps do have orphaned containers then we remove those containers
+and finally the corrupted app from the appRegisty.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Callback called when the app has been rebuilt.
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>errors</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">array</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Error from cleaning app.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">kbox.app.clean(function(errs) {
+  if (err) {
+    throw err;
+  } else {
+    console.log(&#x27;PURIFICATION COMPLETE!&#x27;);
+  }
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="create"><span class="type-signature">&lt;static> </span>create<span class="signature">(name, config, callback)</span><span class="type-signature"></span></h4>
     
     
@@ -638,6 +819,208 @@
         
     <pre class="sunlight-highlight-javascript">kbox.app.create(config.appName, config, function(err, app) {
  callback(err, app);
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="destroy"><span class="type-signature">&lt;static> </span>destroy<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Uninstalls an app's components including the data container, and removes
+the app's code directory.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>app</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">object</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">App object you want to uninstall.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Callback called when the app has been uninstalled.
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>errors</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">array</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Array of errors from uninstalling components.</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">kbox.app.destroy(app, function(err) {
+  if (err) {
+    throw err;
+  } else {
+    console.log(&#x27;App destroyed.&#x27;);
+  }
 });</pre>
 
 
@@ -2307,7 +2690,7 @@ any other apps running.
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.2.2</a>
-    on 2015-09-25T23:12:04+00:00
+    on 2015-10-07T23:09:20+00:00
     </span>
         </footer>
       </div>
