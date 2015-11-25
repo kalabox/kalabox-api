@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes, width=device-width">
-  <title>Kalabox API — Module: events</title>
+  <title>Kalabox API — Module: pkg</title>
   <link rel="shortcut icon" href="/favicon.ico">
 
   <!--[if lt IE 9]>
@@ -126,12 +126,12 @@
           
 
 
-	<h1 class="page-title">Module: events</h1>
+	<h1 class="page-title">Module: pkg</h1>
 <section>
 
 <header>
     <h2>
-    events
+    pkg
     </h2>
     
 </header>
@@ -142,7 +142,7 @@
 
     
         
-            <div class="description">Module for kalabox's shared asynchronous event engine.</div>
+            <div class="description">Module to determine if the target OS has a package installed</div>
         
 
         
@@ -199,7 +199,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="emit"><span class="type-signature">&lt;static> </span>emit<span class="signature">(name, context, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="addSourceCmd"><span class="type-signature">&lt;static> </span>addSourceCmd<span class="signature">(source, key)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -207,8 +207,8 @@
     
     
     <div class="description">
-        Fire off all registered listener callbacks for the named event in order of
-  priority in an asynchronous series fashion.
+        Returns a command to add a source
+NOTE: LINUX ONLY
     </div>
     
 
@@ -242,7 +242,7 @@
   
           <tr>
               
-                  <td class="name"><code>name</code></td>
+                  <td class="name"><code>source</code></td>
               
   
               <td class="type">
@@ -258,39 +258,20 @@
   
               
   
-              <td class="description last">Name of the event to fire off.</td>
+              <td class="description last">The source location</td>
           </tr>
   
     
   
           <tr>
               
-                  <td class="name"><code>context</code></td>
-              
-  
-              <td class="type">
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">[optional] - Optional context to populate the listener
-  callbacks with.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
+                  <td class="name"><code>key</code></td>
               
   
               <td class="type">
               
                   
-<span class="param-type">function</span>
+<span class="param-type">string</span>
 
 
               
@@ -300,58 +281,7 @@
   
               
   
-              <td class="description last">Callback called when all listener callbacks
-  have completed.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>error</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">error</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Possible error returned by listener callbacks.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
+              <td class="description last">Optional key</td>
           </tr>
   
     
@@ -403,24 +333,13 @@
     
     
     
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">var status = shields.up();
-kbox.core.events.emit(&#x27;shields-status-change&#x27;, status, function(err) {
-  if (err)  {
-    throw err;
-  }
-});</pre>
-
-
     
 </dd>
 
         
             
 <dt>
-    <h4 class="name" id="on"><span class="type-signature">&lt;static> </span>on<span class="signature">(name, priority, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="exists"><span class="type-signature">&lt;static> </span>exists<span class="signature">(package)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -428,7 +347,7 @@ kbox.core.events.emit(&#x27;shields-status-change&#x27;, status, function(err) {
     
     
     <div class="description">
-        Register a callback to listen to an event.
+        Returns whether a package exists or not
     </div>
     
 
@@ -462,7 +381,7 @@ kbox.core.events.emit(&#x27;shields-status-change&#x27;, status, function(err) {
   
           <tr>
               
-                  <td class="name"><code>name</code></td>
+                  <td class="name"><code>package</code></td>
               
   
               <td class="type">
@@ -478,125 +397,7 @@ kbox.core.events.emit(&#x27;shields-status-change&#x27;, status, function(err) {
   
               
   
-              <td class="description last">Name of the event to listen in on.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>priority</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">number</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">[optional] - Optional priority value. Lower priority
-  callbacks are executed first. The default value is 5. From 0-9</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback called when the event is fired.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>context</code></td>
-              
-  
-              <td class="type">
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">[optional] - Optional context of the event.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>next</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback function that must be called to
-  return control back to the event engine and allow the next callback to
-  be run. If the event generates an error, that error can be reported back
-  to callback as an argument of the next callback. IT MUST BE CALLED!</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
+              <td class="description last">The package to check</td>
           </tr>
   
     
@@ -649,15 +450,284 @@ kbox.core.events.emit(&#x27;shields-status-change&#x27;, status, function(err) {
     
     
     
-        <h5>Example</h5>
+</dd>
+
         
-    <pre class="sunlight-highlight-javascript">kbox.core.events.on(&#x27;shields-status-change&#x27;, function(status, next) {
-  foo.asyncFunction(status, function(err) {
-    next(err);
-  })
-});</pre>
+            
+<dt>
+    <h4 class="name" id="installCmd"><span class="type-signature">&lt;static> </span>installCmd<span class="signature">(package, data)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Returns an install command string for a package
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>package</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">string</span>
 
 
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">The package to install</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>data</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">string</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Additional info for the package</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="refreshSourcesCmd"><span class="type-signature">&lt;static> </span>refreshSourcesCmd<span class="signature">(source, key)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Returns a command to refresh sources
+NOTE: LINUX ONLY
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>source</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">string</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">The source location</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>key</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">string</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Optional key</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
     
 </dd>
 
@@ -687,7 +757,7 @@ kbox.core.events.emit(&#x27;shields-status-change&#x27;, status, function(err) {
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.2.2</a>
-    on 2015-11-25T23:06:05+00:00
+    on 2015-11-25T23:06:06+00:00
     </span>
         </footer>
       </div>
