@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=yes, width=device-width">
-  <title>Kalabox API — Module: services</title>
+  <title>Kalabox API — Module: yaml</title>
   <link rel="shortcut icon" href="/favicon.ico">
 
   <!--[if lt IE 9]>
@@ -44,10 +44,6 @@
             </li>
             
             <li>
-              <a href="provider.html">kbox.engine.provider</a>
-            </li>
-            
-            <li>
               <a href="app.html">kbox.app</a>
             </li>
             
@@ -64,7 +60,7 @@
             </li>
             
             <li>
-              <a href="services.html">kbox.services</a>
+              <a href="cli.html">kbox.util.cli</a>
             </li>
             
             <li>
@@ -92,11 +88,23 @@
             </li>
             
             <li>
+              <a href="linux.html">kbox.util.linux</a>
+            </li>
+            
+            <li>
               <a href="pkg.html">kbox.util.pkg</a>
             </li>
             
             <li>
               <a href="shell.html">kbox.util.shell</a>
+            </li>
+            
+            <li>
+              <a href="windows.html">kbox.util.windows</a>
+            </li>
+            
+            <li>
+              <a href="yaml.html">kbox.util.yaml</a>
             </li>
             
             <li>
@@ -126,12 +134,12 @@
           
 
 
-	<h1 class="page-title">Module: services</h1>
+	<h1 class="page-title">Module: yaml</h1>
 <section>
 
 <header>
     <h2>
-    services
+    yaml
     </h2>
     
 </header>
@@ -142,19 +150,7 @@
 
     
         
-            <div class="description">Kalabox allows the spin up of additional containers that may be needed to
-support apps running correctly. By default Kalabox ships with a default
-set of services, called "kalabox" to allow for better intra-container
-communication and reverse proxying.
-
-Kalabox uses the following interface which the default set of services
-implements. You can easily define your own set of services using the default
-ones as an example. To do so you will want to edit your global config file
-to change the services key with your own and then add a folder and modules
-into the services folder using the name set in the global config. For example
-if you are using 'kalabox' as your set of services then you would expect to
-see a folder named 'kalabox' in the services folder and a module named
-kalabox.js</div>
+            <div class="description">Module to handle yaml data and files.</div>
         
 
         
@@ -208,16 +204,15 @@ kalabox.js</div>
 
         <dl>
             
-<dt class="name" id="servicesInstance">
-    <h4><span class="type-signature">&lt;inner> </span>servicesInstance<span class="type-signature"></span></h4>
+<dt class="name" id="toYaml">
+    <h4><span class="type-signature">&lt;inner> </span>toYaml<span class="type-signature"></span></h4>
 
     
 </dt>
 <dd>
     
     <div class="description">
-        Loads the corrects services module based on the value of the 'services' key
-in the global config.
+        Converts object to yaml
     </div>
     
 
@@ -253,27 +248,6 @@ in the global config.
 
   
 </dl>
-
-
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">var DEFAULT_GLOBAL_CONFIG = {
-  domain: &#x27;kbox&#x27;,
-  engine: &#x27;docker&#x27;,
-  services: &#x27;MYSERVICE&#x27;,
-  kboxRoot: &#x27;:home:&#x2F;kalabox&#x27;,
-  kalaboxRoot: &#x27;:kboxRoot:&#x27;,
-  appsRoot: &#x27;:kboxRoot:&#x2F;apps&#x27;,
-  globalPluginRoot: &#x27;:kboxRoot:&#x2F;plugins&#x27;,
-  globalPlugins: [
-    &#x27;hipache&#x27;,
-    &#x27;kalabox_core&#x27;,
-    &#x27;kalabox_install&#x27;,
-    &#x27;kalabox_app&#x27;,
-    &#x27;kalabox_provider&#x27;
-  ]
-};</pre>
 
 
     
@@ -288,7 +262,7 @@ in the global config.
         <dl>
             
 <dt>
-    <h4 class="name" id="install"><span class="type-signature">&lt;static> </span>install<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="dataToJson"><span class="type-signature">&lt;static> </span>dataToJson<span class="signature">(file)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -296,7 +270,7 @@ in the global config.
     
     
     <div class="description">
-        Installs and creates all the containers needed for the services
+        Safeloads yaml data to object
     </div>
     
 
@@ -330,13 +304,13 @@ in the global config.
   
           <tr>
               
-                  <td class="name"><code>callback</code></td>
+                  <td class="name"><code>file</code></td>
               
   
               <td class="type">
               
                   
-<span class="param-type">function</span>
+<span class="param-type">string</span>
 
 
               
@@ -346,57 +320,7 @@ in the global config.
   
               
   
-              <td class="description last">Callback called when the services have been installed and created.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>errors</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">array</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Array of errors from installing of services.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
+              <td class="description last">The path of the yaml file.</td>
           </tr>
   
     
@@ -448,23 +372,13 @@ in the global config.
     
     
     
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">services.install(function() {
-  log.info(&#x27;Core services installed.&#x27;);
-    next(null);
-  });
-}</pre>
-
-
     
 </dd>
 
         
             
 <dt>
-    <h4 class="name" id="rebuild"><span class="type-signature">&lt;static> </span>rebuild<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="toJson"><span class="type-signature">&lt;static> </span>toJson<span class="signature">(file)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -472,7 +386,7 @@ in the global config.
     
     
     <div class="description">
-        Destroys all the startable services and recreates them
+        Reads a file and return json object
     </div>
     
 
@@ -506,13 +420,13 @@ in the global config.
   
           <tr>
               
-                  <td class="name"><code>callback</code></td>
+                  <td class="name"><code>file</code></td>
               
   
               <td class="type">
               
                   
-<span class="param-type">function</span>
+<span class="param-type">string</span>
 
 
               
@@ -522,57 +436,7 @@ in the global config.
   
               
   
-              <td class="description last">Callback called when the services have been installed and created.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>errors</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">array</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Array of errors from installing of services.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
+              <td class="description last">The path of the yaml file.</td>
           </tr>
   
     
@@ -624,23 +488,13 @@ in the global config.
     
     
     
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">services.rebuild(function() {
-  log.info(&#x27;Core services rebuilt!.&#x27;);
-    next(null);
-  });
-}</pre>
-
-
     
 </dd>
 
         
             
 <dt>
-    <h4 class="name" id="verify"><span class="type-signature">&lt;static> </span>verify<span class="signature">(callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="toYamlFile"><span class="type-signature">&lt;static> </span>toYamlFile<span class="signature">(file)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -648,8 +502,7 @@ in the global config.
     
     
     <div class="description">
-        Makes sure that the services module has all their containers up and running
-before an app is started or stopped.
+        Converts object to yamlfile
     </div>
     
 
@@ -683,13 +536,13 @@ before an app is started or stopped.
   
           <tr>
               
-                  <td class="name"><code>callback</code></td>
+                  <td class="name"><code>file</code></td>
               
   
               <td class="type">
               
                   
-<span class="param-type">function</span>
+<span class="param-type">string</span>
 
 
               
@@ -699,57 +552,7 @@ before an app is started or stopped.
   
               
   
-              <td class="description last">Callback called when the services have been started.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>error</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">error</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last"></td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
+              <td class="description last">The path of the yaml file.</td>
           </tr>
   
     
@@ -801,19 +604,6 @@ before an app is started or stopped.
     
     
     
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">services.verify(function(err) {
-  if (err) {
-    callback(err);
-  }
-  else {
-    someFunctionThatDoesAppThingsThatRequireServicesToBeStarted();
-  }
-});</pre>
-
-
     
 </dd>
 
@@ -843,7 +633,7 @@ before an app is started or stopped.
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.2.2</a>
-    on 2015-11-25T23:06:05+00:00
+    on 2016-01-27T05:36:27+00:00
     </span>
         </footer>
       </div>

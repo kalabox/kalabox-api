@@ -44,10 +44,6 @@
             </li>
             
             <li>
-              <a href="provider.html">kbox.engine.provider</a>
-            </li>
-            
-            <li>
               <a href="app.html">kbox.app</a>
             </li>
             
@@ -64,7 +60,7 @@
             </li>
             
             <li>
-              <a href="services.html">kbox.services</a>
+              <a href="cli.html">kbox.util.cli</a>
             </li>
             
             <li>
@@ -92,11 +88,23 @@
             </li>
             
             <li>
+              <a href="linux.html">kbox.util.linux</a>
+            </li>
+            
+            <li>
               <a href="pkg.html">kbox.util.pkg</a>
             </li>
             
             <li>
               <a href="shell.html">kbox.util.shell</a>
+            </li>
+            
+            <li>
+              <a href="windows.html">kbox.util.windows</a>
+            </li>
+            
+            <li>
+              <a href="yaml.html">kbox.util.yaml</a>
             </li>
             
             <li>
@@ -201,134 +209,6 @@ however it would be provided by boot2docker.</div>
 
         <dl>
             
-<dt class="name" id="exists">
-    <h4><span class="type-signature">&lt;static> </span>exists<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Returns whether a container exists or not.
-    </div>
-    
-
-    
-
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript"> kbox.engine.exists(CONTAINER_NAME, function(err, exists) {
-   if (err) {
-     throw err;
-   }
-   else {
-     console.log(&#x27;I think, therefore i am.&#x27;);
-   }
- });</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt class="name" id="run">
-    <h4><span class="type-signature">&lt;inner> </span>run<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        Runs a command in a container, in interactive mode
-    </div>
-    
-
-    
-
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">var image = &#x27;kalabox&#x2F;git:stable&#x27;;
-var cmd = [&#x27;git&#x27;, &#x27;status&#x27;];
-kbox.engine.run(image, cmd, {}, {}, function(err) {
-  if (err) {
-    throw err;
-  }
-  done();
-});</pre>
-
-
-    
-</dd>
-
-        
-            
 <dt class="name" id="up">
     <h4><span class="type-signature">&lt;inner> </span>up<span class="type-signature"></span></h4>
 
@@ -401,7 +281,7 @@ engine things.
         <dl>
             
 <dt>
-    <h4 class="name" id="build"><span class="type-signature">&lt;static> </span>build<span class="signature">(image, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="build"><span class="type-signature">&lt;static> </span>build<span class="signature">(data, callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -409,7 +289,7 @@ engine things.
     
     
     <div class="description">
-        Pulls or builds the image for a container.
+        Pulls or builds images.
     </div>
     
 
@@ -443,7 +323,7 @@ engine things.
   
           <tr>
               
-                  <td class="name"><code>image</code></td>
+                  <td class="name"><code>data</code></td>
               
   
               <td class="type">
@@ -459,7 +339,7 @@ engine things.
   
               
   
-              <td class="description last">Image object to pull or build.</td>
+              <td class="description last">Data about what to build. @todo: define data better</td>
           </tr>
   
     
@@ -482,7 +362,7 @@ engine things.
   
               
   
-              <td class="description last">Callback called when the image has been built.
+              <td class="description last">Callback called when the data has been built.
                   <h6>Properties</h6>
                   
 <div class="params-table-container">
@@ -596,16 +476,13 @@ engine things.
   }
 });
 
-kbox.engine.build({name: &#x27;kalabox&#x2F;syncthing&#x27;}, function(err) {
-  if (err) {
-    state.status = false;
-    done(err);
-  } else {
-    done();
-  }
-});
+return kbox.engine.build({id: &#x27;342&#x27;, name: &#x27;syncthing&#x27;})
 
-kbox.engine.build({name: &#x27;syncthing&#x27;}, function(err) {
+.then(function() {
+  &#x2F;&#x2F; Do stuff
+})
+
+kbox.engine.build({id: &#x27;syncthing&#x27;, compose: composeDirs}, function(err) {
   if (err) {
     state.status = false;
     done(err);
@@ -621,7 +498,7 @@ kbox.engine.build({name: &#x27;syncthing&#x27;}, function(err) {
         
             
 <dt>
-    <h4 class="name" id="create"><span class="type-signature">&lt;static> </span>create<span class="signature">(createOptions, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="destroy"><span class="type-signature">&lt;static> </span>destroy<span class="signature">(data, callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -629,7 +506,7 @@ kbox.engine.build({name: &#x27;syncthing&#x27;}, function(err) {
     
     
     <div class="description">
-        Creates a container.
+        Removes a container from the engine.
     </div>
     
 
@@ -663,13 +540,13 @@ kbox.engine.build({name: &#x27;syncthing&#x27;}, function(err) {
   
           <tr>
               
-                  <td class="name"><code>createOptions</code></td>
+                  <td class="name"><code>data</code></td>
               
   
               <td class="type">
               
                   
-<span class="param-type">object</span>
+<span class="param-type">string</span>
 
 
               
@@ -679,7 +556,7 @@ kbox.engine.build({name: &#x27;syncthing&#x27;}, function(err) {
   
               
   
-              <td class="description last">[optional] - Object containing the create options for the container.</td>
+              <td class="description last">Data to ID the container(s) to remove.</td>
           </tr>
   
     
@@ -702,7 +579,7 @@ kbox.engine.build({name: &#x27;syncthing&#x27;}, function(err) {
   
               
   
-              <td class="description last">Callback called when the container has been created.
+              <td class="description last">Callback called when the container(s) has been removed.
                   <h6>Properties</h6>
                   
 <div class="params-table-container">
@@ -745,29 +622,6 @@ kbox.engine.build({name: &#x27;syncthing&#x27;}, function(err) {
               
   
               <td class="description last"></td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>data</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Object containing the created containers information.</td>
           </tr>
   
     
@@ -830,20 +684,17 @@ kbox.engine.build({name: &#x27;syncthing&#x27;}, function(err) {
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">engine.create(component.installOptions, function(err, container) {
-  if (err) {
-   callback(err);
-  } else {
-    if (container) {
-      component.containerId = container.cid;
-      fs.writeFileSync(
-        path.resolve(component.containerIdFile), container.cid
-      );
-   }
-    events.emit(&#x27;post-install-component&#x27;, component, function(err) {
-      callback(err);
-    });
-  }
+    <pre class="sunlight-highlight-javascript"> kbox.engine.destroy(containerId, function() {
+  fs.unlinkSync(containerIdFile);
+  console.log(&#x27;Removing the codez.&#x27;);
+  rmdir(app.config.codeRoot, function(err) {
+    if (err) {
+      done(err);
+    }
+    else {
+      done();
+    }
+  });
 });</pre>
 
 
@@ -853,7 +704,7 @@ kbox.engine.build({name: &#x27;syncthing&#x27;}, function(err) {
         
             
 <dt>
-    <h4 class="name" id="down"><span class="type-signature">&lt;static> </span>down<span class="signature">(attempts, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="down"><span class="type-signature">&lt;static> </span>down<span class="signature">(callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -891,29 +742,6 @@ kbox.engine.build({name: &#x27;syncthing&#x27;}, function(err) {
     </thead>
   
     <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>attempts</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">int</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">The amount of times to try to stop the engine.</td>
-          </tr>
-  
     
   
           <tr>
@@ -1048,6 +876,231 @@ kbox.engine.build({name: &#x27;syncthing&#x27;}, function(err) {
         
             
 <dt>
+    <h4 class="name" id="exists"><span class="type-signature">&lt;static> </span>exists<span class="signature">(data, callback)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Returns whether a container exists or not.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>data</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">string</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Data to identify the container.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>callback</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">function</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Callback..
+                  <h6>Properties</h6>
+                  
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>error</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">error</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last"></td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>exists</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">boolean</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Whether the container exists or not</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+              </td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript"> kbox.engine.exists(CONTAINER_NAME, function(err, exists) {
+   if (err) {
+     throw err;
+   }
+   else {
+     console.log(&#x27;I think, therefore i am.&#x27;);
+   }
+ });</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
     <h4 class="name" id="getProviderName"><span class="type-signature">&lt;static> </span>getProviderName<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
     
     
@@ -1131,252 +1184,6 @@ kbox.engine.build({name: &#x27;syncthing&#x27;}, function(err) {
 
         
     
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="info"><span class="type-signature">&lt;static> </span>info<span class="signature">(containerId, callback)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Inspects a container and returns details.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>containerId</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">string</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Id of the container to inspect.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback called when the container has been inspected.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>error</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">error</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last"></td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>data</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Object containing the containers inspected data.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">kbox.engine.info(container.id, function(err, info) {
-  if (info.running) {
-    kbox.engine.stop(container.id, function(err) {
-      if (err) {
-        done(err);
-      }
-      else {
-        kbox.engine.remove(container.id, function(err) {
-          if (err) {
-            done(err);
-          }
-          else {
-            done();
-          }
-        });
-      }
-    });
-  }
-  else {
-    kbox.engine.remove(container.id, function(err) {
-      if (err) {
-        done(err);
-      }
-      else {
-        done();
-      }
-    });
-  }
-});</pre>
-
-
     
 </dd>
 
@@ -1506,7 +1313,7 @@ kbox.engine.init(globalConfig);</pre>
         
             
 <dt>
-    <h4 class="name" id="inspect"><span class="type-signature">&lt;static> </span>inspect<span class="signature">(containerId, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="inspect"><span class="type-signature">&lt;static> </span>inspect<span class="signature">(data, callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1548,7 +1355,7 @@ kbox.engine.init(globalConfig);</pre>
   
           <tr>
               
-                  <td class="name"><code>containerId</code></td>
+                  <td class="name"><code>data</code></td>
               
   
               <td class="type">
@@ -1564,7 +1371,7 @@ kbox.engine.init(globalConfig);</pre>
   
               
   
-              <td class="description last">Id of the container to inspect.</td>
+              <td class="description last">Data to id the container to inspect.</td>
           </tr>
   
     
@@ -1935,7 +1742,7 @@ kbox.engine.init(globalConfig);</pre>
         
             
 <dt>
-    <h4 class="name" id="list"><span class="type-signature">&lt;static> </span>list<span class="signature">(appName, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="list"><span class="type-signature">&lt;static> </span>list<span class="signature">(data, callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -1977,7 +1784,7 @@ kbox.engine.init(globalConfig);</pre>
   
           <tr>
               
-                  <td class="name"><code>appName</code></td>
+                  <td class="name"><code>data</code></td>
               
   
               <td class="type">
@@ -1993,7 +1800,7 @@ kbox.engine.init(globalConfig);</pre>
   
               
   
-              <td class="description last">[optional] - App name to filter containers by.</td>
+              <td class="description last">[optional] - Data to filter containers by.</td>
           </tr>
   
     
@@ -2157,7 +1964,7 @@ kbox.engine.init(globalConfig);</pre>
         
             
 <dt>
-    <h4 class="name" id="remove"><span class="type-signature">&lt;static> </span>remove<span class="signature">(containerId, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="run"><span class="type-signature">&lt;static> </span>run<span class="signature">(data, callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -2165,7 +1972,7 @@ kbox.engine.init(globalConfig);</pre>
     
     
     <div class="description">
-        Removes a container from the engine.
+        Runs a command in a container, in interactive mode
     </div>
     
 
@@ -2199,7 +2006,7 @@ kbox.engine.init(globalConfig);</pre>
   
           <tr>
               
-                  <td class="name"><code>containerId</code></td>
+                  <td class="name"><code>data</code></td>
               
   
               <td class="type">
@@ -2215,7 +2022,7 @@ kbox.engine.init(globalConfig);</pre>
   
               
   
-              <td class="description last">Id of the container to remove.</td>
+              <td class="description last">Data about the container to run.</td>
           </tr>
   
     
@@ -2238,7 +2045,7 @@ kbox.engine.init(globalConfig);</pre>
   
               
   
-              <td class="description last">Callback called when the container has been removed.
+              <td class="description last">Callback called when the container has been started.
                   <h6>Properties</h6>
                   
 <div class="params-table-container">
@@ -2343,17 +2150,13 @@ kbox.engine.init(globalConfig);</pre>
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript"> kbox.engine.remove(containerId, function() {
-  fs.unlinkSync(containerIdFile);
-  console.log(&#x27;Removing the codez.&#x27;);
-  rmdir(app.config.codeRoot, function(err) {
-    if (err) {
-      done(err);
-    }
-    else {
-      done();
-    }
-  });
+    <pre class="sunlight-highlight-javascript">var image = &#x27;kalabox&#x2F;git:stable&#x27;;
+var cmd = [&#x27;git&#x27;, &#x27;status&#x27;];
+kbox.engine.run({image: image, cmd: cmd, startOpts: {}, createOpts: {}, function(err) {
+  if (err) {
+    throw err;
+  }
+  done();
 });</pre>
 
 
@@ -2363,7 +2166,7 @@ kbox.engine.init(globalConfig);</pre>
         
             
 <dt>
-    <h4 class="name" id="start"><span class="type-signature">&lt;static> </span>start<span class="signature">(containerId, startOptions, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="start"><span class="type-signature">&lt;static> </span>start<span class="signature">(data, callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -2405,7 +2208,7 @@ kbox.engine.init(globalConfig);</pre>
   
           <tr>
               
-                  <td class="name"><code>containerId</code></td>
+                  <td class="name"><code>data</code></td>
               
   
               <td class="type">
@@ -2421,30 +2224,7 @@ kbox.engine.init(globalConfig);</pre>
   
               
   
-              <td class="description last">Id of the container to start.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>startOptions</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">[optional] - Object containing the start options for the container.</td>
+              <td class="description last">Data about the container(s) to start.</td>
           </tr>
   
     
@@ -2579,7 +2359,7 @@ kbox.engine.init(globalConfig);</pre>
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">engine.start(component.containerId, component.opts, function(err) {
+    <pre class="sunlight-highlight-javascript">engine.start(component.containerId, function(err) {
   if (err) {
     callback(err);
   } else {
@@ -2600,7 +2380,7 @@ kbox.engine.init(globalConfig);</pre>
         
             
 <dt>
-    <h4 class="name" id="stop"><span class="type-signature">&lt;static> </span>stop<span class="signature">(containerId, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="stop"><span class="type-signature">&lt;static> </span>stop<span class="signature">(data, callback)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -2642,7 +2422,7 @@ kbox.engine.init(globalConfig);</pre>
   
           <tr>
               
-                  <td class="name"><code>containerId</code></td>
+                  <td class="name"><code>data</code></td>
               
   
               <td class="type">
@@ -2658,7 +2438,7 @@ kbox.engine.init(globalConfig);</pre>
   
               
   
-              <td class="description last">Id of the container to stop.</td>
+              <td class="description last">Data to ID the container(s) to stop.</td>
           </tr>
   
     
@@ -2823,7 +2603,7 @@ kbox.engine.init(globalConfig);</pre>
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.2.2</a>
-    on 2015-11-25T23:06:05+00:00
+    on 2016-01-27T05:36:26+00:00
     </span>
         </footer>
       </div>

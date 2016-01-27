@@ -44,10 +44,6 @@
             </li>
             
             <li>
-              <a href="provider.html">kbox.engine.provider</a>
-            </li>
-            
-            <li>
               <a href="app.html">kbox.app</a>
             </li>
             
@@ -64,7 +60,7 @@
             </li>
             
             <li>
-              <a href="services.html">kbox.services</a>
+              <a href="cli.html">kbox.util.cli</a>
             </li>
             
             <li>
@@ -92,11 +88,23 @@
             </li>
             
             <li>
+              <a href="linux.html">kbox.util.linux</a>
+            </li>
+            
+            <li>
               <a href="pkg.html">kbox.util.pkg</a>
             </li>
             
             <li>
               <a href="shell.html">kbox.util.shell</a>
+            </li>
+            
+            <li>
+              <a href="windows.html">kbox.util.windows</a>
+            </li>
+            
+            <li>
+              <a href="yaml.html">kbox.util.yaml</a>
             </li>
             
             <li>
@@ -192,6 +200,235 @@
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        <dl>
+            
+<dt class="name" id="esc">
+    <h4><span class="type-signature">&lt;static> </span>esc<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Escapes an array or string into a string to make it more CLI friendly
+    </div>
+    
+
+    
+
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<dt class="name" id="which">
+    <h4><span class="type-signature">&lt;static> </span>which<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Do a which
+    </div>
+    
+
+    
+
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<dt class="name" id="exec">
+    <h4><span class="type-signature">&lt;inner> </span>exec<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Executes a shell command.
+    </div>
+    
+
+    
+
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">return kbox.util.shell.exec(cmd, opts)
+.then(function(output) {
+  &#x2F;&#x2F; things
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt class="name" id="execAsync">
+    <h4><span class="type-signature">&lt;inner> </span>execAsync<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Executes a shell command.
+    </div>
+    
+
+    
+
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">var child = kbox.util.shell.execAsync(cmd);
+child.stdout.on(&#x27;data&#x27;, function(data) {
+  console.log(data);
+});
+child.stdout.on(&#x27;end&#x27;, function() {
+  callback();
+});</pre>
+
+
+    
+</dd>
+
+        </dl>
+    
 
     
         <h3 class="subsection-title">Methods</h3>
@@ -199,7 +436,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="exec"><span class="type-signature">&lt;static> </span>exec<span class="signature">(cmd, callback)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="escSpaces"><span class="type-signature">&lt;static> </span>escSpaces<span class="signature">(command)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -207,160 +444,7 @@
     
     
     <div class="description">
-        Executes a shell command.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>cmd</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">string</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">The shell command to run.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback function that is called on completion.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">var shell = require(...);
-var cmd = &#x27;which kbox&#x27;;
-shell.exec(cmd, function(err, output) {
-  if (err) {
-    throw err;
-  } else {
-    console.log(output);
-  }
-});</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="execAdmin"><span class="type-signature">&lt;static> </span>execAdmin<span class="signature">(command, callback)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Executes a command that requires admin permissions
+        Escapes the spaces in an array or string into a string to make it more CLI friendly
     </div>
     
 
@@ -401,6 +485,9 @@ shell.exec(cmd, function(err, output) {
               
                   
 <span class="param-type">string</span>
+|
+
+<span class="param-type">array</span>
 
 
               
@@ -410,30 +497,7 @@ shell.exec(cmd, function(err, output) {
   
               
   
-              <td class="description last">The shell command to run.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback function that is called on completion.</td>
+              <td class="description last">The command to run.</td>
           </tr>
   
     
@@ -486,26 +550,12 @@ shell.exec(cmd, function(err, output) {
     
     
     
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">var shell = require(...);
-var cmd = &#x27;which kbox&#x27;;
-shell.exec(cmd, function(err, output) {
-  if (err) {
-    throw err;
-  } else {
-    console.log(output);
-  }
-});</pre>
-
-
-    
 </dd>
 
         
             
 <dt>
-    <h4 class="name" id="execAdminAsync"><span class="type-signature">&lt;static> </span>execAdminAsync<span class="signature">(command)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="execAdmin"><span class="type-signature">&lt;static> </span>execAdmin<span class="signature">(commands, opts)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -513,7 +563,7 @@ shell.exec(cmd, function(err, output) {
     
     
     <div class="description">
-        Executes a command that requires admin permissions
+        Executes commands that requires admin permissions
     </div>
     
 
@@ -547,13 +597,16 @@ shell.exec(cmd, function(err, output) {
   
           <tr>
               
-                  <td class="name"><code>command</code></td>
+                  <td class="name"><code>commands</code></td>
               
   
               <td class="type">
               
                   
 <span class="param-type">string</span>
+|
+
+<span class="param-type">array</span>
 
 
               
@@ -563,7 +616,30 @@ shell.exec(cmd, function(err, output) {
   
               
   
-              <td class="description last">The shell command to run.</td>
+              <td class="description last">The shell command or an array of commands to run.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>opts</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">object</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Options to pass in</td>
           </tr>
   
     
@@ -618,13 +694,10 @@ shell.exec(cmd, function(err, output) {
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">var shell = require(...);
-var cmd = &#x27;which kbox&#x27;;
-shell.exec(cmd, function(err, output) {
-  if (err) {
-    throw err;
-  } else {
-    console.log(output);
+    <pre class="sunlight-highlight-javascript">return kbox.util.shell.execAdmin(cmd)
+.then(function(data){
+  if (data === &#x27;whatimlookingfor&#x27;) {
+    return true;
   }
 });</pre>
 
@@ -635,7 +708,7 @@ shell.exec(cmd, function(err, output) {
         
             
 <dt>
-    <h4 class="name" id="execAsync"><span class="type-signature">&lt;static> </span>execAsync<span class="signature">(cmd)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="execAdminAsync"><span class="type-signature">&lt;static> </span>execAdminAsync<span class="signature">(commands, opts)</span><span class="type-signature"></span></h4>
     
     
 </dt>
@@ -643,7 +716,7 @@ shell.exec(cmd, function(err, output) {
     
     
     <div class="description">
-        Executes a shell command.
+        Asynchroniously Executes command(s) that requires admin permissions
     </div>
     
 
@@ -677,13 +750,16 @@ shell.exec(cmd, function(err, output) {
   
           <tr>
               
-                  <td class="name"><code>cmd</code></td>
+                  <td class="name"><code>commands</code></td>
               
   
               <td class="type">
               
                   
 <span class="param-type">string</span>
+|
+
+<span class="param-type">array</span>
 
 
               
@@ -693,7 +769,30 @@ shell.exec(cmd, function(err, output) {
   
               
   
-              <td class="description last">The shell command to run.</td>
+              <td class="description last">The shell command or an array of commands to run.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>opts</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">object</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Options to pass in</td>
           </tr>
   
     
@@ -748,14 +847,12 @@ shell.exec(cmd, function(err, output) {
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">var shell = require(...);
-var cmd = &#x27;which kbox&#x27;;
-shell.exec(cmd, function(err, output) {
-  if (err) {
-    throw err;
-  } else {
-    console.log(output);
-  }
+    <pre class="sunlight-highlight-javascript">var child = kbox.util.shell.execAdminAsync(cmds, opts);
+child.stdout.on(&#x27;data&#x27;, function(data) {
+  console.log(data);
+});
+child.stdout.on(&#x27;end&#x27;, function() {
+  callback();
 });</pre>
 
 
@@ -882,8 +979,156 @@ shell.exec(cmd, function(err, output) {
         &#x27;static &#x27; + ip + &#x27; store=persistent&#x27;;
 return kbox.util.shell.execElevated(cmd)
 .then(function(data) {
-  console.log(data);
-})</pre>
+  return data;
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="spawn"><span class="type-signature">&lt;static> </span>spawn<span class="signature">(cmd, opts)</span><span class="type-signature"></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Spawns a shell command. And optionally collects things
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+<div class="params-table-container">
+  <table class="params table table-striped">
+      <thead>
+    <tr>
+      
+      <th>Name</th>
+      
+  
+      <th>Type</th>
+  
+      
+  
+      
+  
+      <th class="last">Description</th>
+    </tr>
+    </thead>
+  
+    <tbody>
+    
+  
+          <tr>
+              
+                  <td class="name"><code>cmd</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">array</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">An array of commands. Split by spaces.</td>
+          </tr>
+  
+    
+  
+          <tr>
+              
+                  <td class="name"><code>opts</code></td>
+              
+  
+              <td class="type">
+              
+                  
+<span class="param-type">object</span>
+
+
+              
+              </td>
+  
+              
+  
+              
+  
+              <td class="description last">Options on what to do</td>
+          </tr>
+  
+    
+    </tbody>
+  </table>
+</div>
+
+    
+    
+    
+<dl class="details">
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+  
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">return kbox.util.shell.execAdminAsync(cmd, opts)
+.then(function(output) {
+  &#x2F;&#x2F; things
+});</pre>
 
 
     
@@ -915,7 +1160,7 @@ return kbox.util.shell.execElevated(cmd)
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.2.2</a>
-    on 2015-11-25T23:06:06+00:00
+    on 2016-01-27T05:36:27+00:00
     </span>
         </footer>
       </div>

@@ -44,10 +44,6 @@
             </li>
             
             <li>
-              <a href="provider.html">kbox.engine.provider</a>
-            </li>
-            
-            <li>
               <a href="app.html">kbox.app</a>
             </li>
             
@@ -64,7 +60,7 @@
             </li>
             
             <li>
-              <a href="services.html">kbox.services</a>
+              <a href="cli.html">kbox.util.cli</a>
             </li>
             
             <li>
@@ -92,11 +88,23 @@
             </li>
             
             <li>
+              <a href="linux.html">kbox.util.linux</a>
+            </li>
+            
+            <li>
               <a href="pkg.html">kbox.util.pkg</a>
             </li>
             
             <li>
               <a href="shell.html">kbox.util.shell</a>
+            </li>
+            
+            <li>
+              <a href="windows.html">kbox.util.windows</a>
+            </li>
+            
+            <li>
+              <a href="yaml.html">kbox.util.yaml</a>
             </li>
             
             <li>
@@ -365,7 +373,7 @@ and finally the corrupted app from the appRegisty.
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">kbox.app.clean(function(errs) {
+    <pre class="sunlight-highlight-javascript">kbox.app.cleanup(function(errs) {
   if (err) {
     throw err;
   } else {
@@ -660,29 +668,6 @@ and finally the corrupted app from the appRegisty.
             
 
             <td class="description last">URL of the app.</td>
-        </tr>
-
-  
-
-        <tr>
-            
-                <td class="name"><code>dataContainerName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Name of the data component for the app.</td>
         </tr>
 
   
@@ -1252,207 +1237,6 @@ the app's code directory.
     throw err;
   } else {
     console.log(app.config);
-  }
-});</pre>
-
-
-    
-</dd>
-
-        
-            
-<dt>
-    <h4 class="name" id="install"><span class="type-signature">&lt;static> </span>install<span class="signature">(app, callback)</span><span class="type-signature"></span></h4>
-    
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        Installs an app's components.
-    </div>
-    
-
-    
-    
-    
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>app</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">object</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">App object you want to install.</td>
-          </tr>
-  
-    
-  
-          <tr>
-              
-                  <td class="name"><code>callback</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">function</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Callback called when the app has been installed.
-                  <h6>Properties</h6>
-                  
-<div class="params-table-container">
-  <table class="params table table-striped">
-      <thead>
-    <tr>
-      
-      <th>Name</th>
-      
-  
-      <th>Type</th>
-  
-      
-  
-      
-  
-      <th class="last">Description</th>
-    </tr>
-    </thead>
-  
-    <tbody>
-    
-  
-          <tr>
-              
-                  <td class="name"><code>errors</code></td>
-              
-  
-              <td class="type">
-              
-                  
-<span class="param-type">array</span>
-
-
-              
-              </td>
-  
-              
-  
-              
-  
-              <td class="description last">Array of errors from installing components.</td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-              </td>
-          </tr>
-  
-    
-    </tbody>
-  </table>
-</div>
-
-    
-    
-    
-<dl class="details">
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
-
-  
-
-  
-
-  
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">kbox.app.install(app, function(errs) {
-  if (errs) {
-    throw errs;
-  } else {
-    console.log(&#x27;App installed.&#x27;);
   }
 });</pre>
 
@@ -2280,7 +2064,7 @@ containers as specified in the app's kalabox.json. You will need to run
     
     
     <div class="description">
-        Stops an app's components and turn off the engine if there aren't
+        Stops an app's components
 any other apps running.
     </div>
     
@@ -2698,7 +2482,7 @@ any other apps running.
           
     <span class="jsdoc-message">
     Documentation generated by <a href="https://github.com/jsdoc3/jsdoc" target="_blank">JSDoc 3.2.2</a>
-    on 2015-11-25T23:06:05+00:00
+    on 2016-01-27T05:36:26+00:00
     </span>
         </footer>
       </div>
